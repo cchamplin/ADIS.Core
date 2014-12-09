@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADIS.Core.Data", "ADIS.Core.Data\ADIS.Core.Data.csproj", "{D6D799C8-DCE9-47C2-AF22-ADB152A9051B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADIS.Core.Data.Test", "ADIS.Core.Data.Test\ADIS.Core.Data.Test.csproj", "{97FCC76D-367C-46AC-95F1-B9D06CAFAB03}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6D799C8-DCE9-47C2-AF22-ADB152A9051B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6D799C8-DCE9-47C2-AF22-ADB152A9051B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6D799C8-DCE9-47C2-AF22-ADB152A9051B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6D799C8-DCE9-47C2-AF22-ADB152A9051B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97FCC76D-367C-46AC-95F1-B9D06CAFAB03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97FCC76D-367C-46AC-95F1-B9D06CAFAB03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97FCC76D-367C-46AC-95F1-B9D06CAFAB03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97FCC76D-367C-46AC-95F1-B9D06CAFAB03}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
