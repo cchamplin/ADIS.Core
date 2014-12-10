@@ -50,6 +50,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ComplexDBO.cs" />
+    <Compile Include="LinqTest.cs" />
+    <Compile Include="RelatedDBO.cs" />
     <Compile Include="SimpleDBO.cs" />
     <Compile Include="MSSQLTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

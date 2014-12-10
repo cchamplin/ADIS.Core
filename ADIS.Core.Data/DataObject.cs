@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace ADIS.Core.Data
 {
-    public abstract class DataObject<T>
+    public abstract class DataObject<T> : DataObjectBase
     {
-        protected static Dictionary<string, DataProperty> properties = null;
+        
         protected static string label = null;
         protected static Type type = null;
+        protected static Dictionary<string, DataProperty> properties = null;
+        protected static List<DataProperty> propertyList = null;
         public DataObject()
         {
             type = this.GetType();
@@ -34,14 +36,20 @@ namespace ADIS.Core.Data
         /// 
         /// </summary>
         ///
-        [DataExempt]
-        public static Dictionary<string, DataProperty> Properties
+         public override List<DataProperty> PropertyList
         {
             get
             {
-                return properties;
+                return propertyList;
             }
         }
+         public override Dictionary<String, DataProperty> Properties
+         {
+             get
+             {
+                 return properties;
+             }
+         }
         
         [DataExempt]
         public string Label
@@ -55,12 +63,15 @@ namespace ADIS.Core.Data
         protected virtual void ScanProperties()
         {
             properties = new Dictionary<string, DataProperty>();
+            propertyList = new List<DataProperty>();
             var rawProperties = type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
             foreach (var property in rawProperties)
             {
                 if (property.GetCustomAttributes(typeof(DataExempt),true).Length == 0)
                 {
-                    properties.Add(property.Name, new DataProperty(type, property));
+                    var prop = new DataProperty(type, property);
+                    properties.Add(property.Name, prop);
+                    propertyList.Add(prop);
                 }
             }
         }

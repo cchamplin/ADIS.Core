@@ -22,6 +22,7 @@ namespace ADIS.Core.Data
         protected bool isList;
         protected bool isDictionary;
         protected string label;
+        protected string name;
         public Type Type
         {
             get
@@ -36,11 +37,18 @@ namespace ADIS.Core.Data
                 return label;
             }
         }
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+        }
 
         public DataProperty(Type t, PropertyInfo pi)
         {
             this.type = pi.PropertyType;
-
+            this.name = pi.Name;
             foreach (Attribute attr in pi.GetCustomAttributes(false))
             {
                 if (attr is PropertyLabel)

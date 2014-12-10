@@ -15,7 +15,7 @@ namespace ADIS.Core.Data.SQL
         public SelectFragmentContext()
         {
             selectClause = new SelectFragment();
-            whereClause = new ConditionSet();
+            whereClause = new And();
             joins = new List<JoinFragment>();
         }
 
@@ -51,6 +51,10 @@ namespace ADIS.Core.Data.SQL
         public void SetWhere(ConditionSet conditions)
         {
             this.whereClause = conditions;
+        }
+        public void AddCondition(Conditional condition)
+        {
+            this.whereClause.Condition(condition);
         }
 
         public void AddColumn(string tableAlias, string name)

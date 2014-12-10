@@ -21,13 +21,11 @@ namespace ADIS.Core.Data.Providers
             }
             var query = new SelectFragmentContext();
             var table = query.SetTable(dbo.Schema, dbo.TableName);
-            ConditionSet cs = new ConditionSet();
             var condition = new PropertyCondition();
             condition.SetPropertyLeft(table, dbo.BoundProperties[dbo.PrimaryKey]);
             condition.SetRight(keyValue);
             condition.Operation = op;
-            cs.Conditions.Add(condition);
-            query.SetWhere(cs);
+            query.AddCondition(condition);
             System.Diagnostics.Debug.WriteLine(query.ToString());
             return default(T);
         }

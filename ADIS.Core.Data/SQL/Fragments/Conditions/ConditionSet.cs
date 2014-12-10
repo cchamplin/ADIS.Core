@@ -9,11 +9,24 @@ namespace ADIS.Core.Data.SQL
     public class ConditionSet : Conditional
     {
 
-        public List<Conditional> Conditions;
-        public ConditionSet()
+        protected List<Conditional> Conditions;
+        protected string separator;
+        public ConditionSet(string separator)
         {
+            this.separator = separator;
             Conditions = new List<Conditional>();
         }
+        public Conditional Condition(Conditional condition)
+        {
+            Conditions.Add(condition);
+            return this;
+        }
+        public Conditional Condition(string literalLeft, string literalRight, string op = "=")
+        {
+            Conditions.Add(new PropertyCondition());
+            return this;
+        }
+
         public void AddCondition(Conditional condition)
         {
             Conditions.Add(condition);
@@ -32,20 +45,10 @@ namespace ADIS.Core.Data.SQL
             sql.Append(Conditions[0].ToSQL(context));
             for (int x = 1; x < Conditions.Count; x++)
             {
-                if (Conditions[x] is AndCondition)
-                {
-                    sql.Append(" AND ");
-                   
-                }
-                else if (Conditions[x] is OrCondition)
-                {
-                    sql.Append(" OR ");
-                }
-                else
-                {
-                    sql.Append(" AND ");
-                }
-                
+
+                sql.Append(" ");
+                sql.Append(this.separator);
+                sql.Append(" ");
                 sql.Append(Conditions[x].ToSQL(context));
             }
             sql.Append(")");

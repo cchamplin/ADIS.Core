@@ -13,7 +13,7 @@ namespace ADIS.Core.Data.SQL
          public JoinFragment(TableFragment table)
         {
             this.rightTable = table;
-            this.joinConditions = new ConditionSet();
+            this.joinConditions = new And();
         }
 
          public JoinFragment(TableFragment table, ConditionSet conditions)

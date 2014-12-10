@@ -15,7 +15,7 @@ namespace ADIS.Core.Data.SQL
         {
             this.schema = schema;
             this.name = name;
-            this.alias = name + context.NextTableIndex();
+            this.alias = context.NextTable();
         }
 
         public string Schema

@@ -17,6 +17,54 @@ namespace ADIS.Core.Data.SQL
         {
             op = "=";
         }
+        public PropertyCondition(object left, object right, string op = "=")
+        {
+            this.literalLeft = false;
+            this.literalRight = false;
+            this.left = left;
+            this.right = right;
+            this.op = op;
+        }
+        public PropertyCondition(string tableAlias, string literalLeft, object right, string op = "=")
+        {
+            this.literalLeft = true;
+            this.literalRight = false;
+            this.left = tableAlias + "." + literalLeft;
+            this.right = right;
+            this.op = op;
+        }
+        public PropertyCondition(string tableAliasLeft, string literalLeft, string tableAliasRight, string literalRight, string op = "=")
+        {
+            this.literalLeft = true;
+            this.literalRight = true;
+            this.left = tableAliasLeft + "." + literalLeft;
+            this.right = tableAliasRight + "." + literalRight;
+            this.op = op;
+        }
+        public PropertyCondition(string tableAliasLeft, DataBoundProperty propertyLeft, object right, string op = "=")
+        {
+            this.literalLeft = true;
+            this.literalRight = false;
+            this.left = tableAliasLeft + "." + propertyLeft.ColumnName;
+            this.right = right;
+            this.op = op;
+        }
+        public PropertyCondition(string tableAliasLeft, DataBoundProperty propertyLeft, string tableAliasRight, string literalRight, string op = "=")
+        {
+            this.literalLeft = true;
+            this.literalRight = true;
+            this.left = tableAliasLeft + "." + propertyLeft.ColumnName;
+            this.right = tableAliasRight + "." + literalRight;
+            this.op = op;
+        }
+        public PropertyCondition(string tableAliasLeft, DataBoundProperty propertyLeft, string tableAliasRight, DataBoundProperty propertyRight, string op = "=")
+        {
+            this.literalLeft = true;
+            this.literalRight = true;
+            this.left = tableAliasLeft + "." + propertyLeft.ColumnName;
+            this.right = tableAliasRight + "." + propertyRight.ColumnName;
+            this.op = op;
+        }
         public object Left
         {
             get
@@ -97,7 +145,7 @@ namespace ADIS.Core.Data.SQL
         public override string ToSQL(FragmentContext context)
         {
             StringBuilder sb = new StringBuilder();
-            int idx;
+            string idx;
             if (literalLeft)
             {
                 sb.Append(left);
@@ -105,10 +153,9 @@ namespace ADIS.Core.Data.SQL
             }
             else
             {
-                idx = context.NextParameterIndex();
-                sb.Append(":parameter");
+                idx = context.NextParameter();
                 sb.Append(idx);
-                context.AddParameter(":parameter"+idx,left);
+                context.AddParameter(idx,left);
             }
             sb.Append(op);
             if (literalRight)
@@ -117,10 +164,9 @@ namespace ADIS.Core.Data.SQL
             }
             else
             {
-                idx = context.NextParameterIndex();
-                sb.Append(":parameter");
+                idx = context.NextParameter();
                 sb.Append(idx);
-                context.AddParameter(":parameter" + idx, right);
+                context.AddParameter(idx, left);
             }
            
             return sb.ToString();

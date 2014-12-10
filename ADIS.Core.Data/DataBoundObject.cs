@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace ADIS.Core.Data
 {
-    public abstract class DataBoundObject<T> : DataObject<T>
+    public abstract class DataBoundObject<T> : DataObject<T>, IDataBound
     {
         
         protected static string tableName = null;
         protected static string schema = null;
         protected static string primaryKey = null;
+        
         public DataBoundObject() : base()
         {
 
@@ -38,6 +39,7 @@ namespace ADIS.Core.Data
         protected override void ScanProperties()
         {
             properties = new Dictionary<string, DataProperty>();
+            propertyList = new List<DataProperty>();
             var rawProperties = type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
             bool added;
             foreach (var property in rawProperties)
@@ -49,7 +51,9 @@ namespace ADIS.Core.Data
                     {
                         if (attr is PropertyLabel)
                         {
-                            properties.Add(property.Name, new DataBoundProperty(type, property));
+                            var prop = new DataBoundProperty(type, property);
+                            properties.Add(property.Name, prop);
+                            propertyList.Add(prop);
                             added = true;
                             continue;
                         }
@@ -57,7 +61,9 @@ namespace ADIS.Core.Data
 
                     if (!added)
                     {
-                        properties.Add(property.Name, new DataProperty(type, property));
+                        var prop = new DataBoundProperty(type, property);
+                        properties.Add(property.Name, prop);
+                        propertyList.Add(prop);
                     }
                 }
             }
@@ -92,5 +98,6 @@ namespace ADIS.Core.Data
         {
             get { return primaryKey; }
         }
+       
     }
 }

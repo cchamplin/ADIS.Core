@@ -17,18 +17,18 @@ namespace ADIS.Core.Data.SQL
             parameters = new Dictionary<string, object>();
         }
 
-        public int NextParameterIndex()
+        public string NextParameter()
         {
             lock (this)
             {
-                return parameterIndex++;
+                return ":p" + parameterIndex++;
             }
         }
-        public int NextTableIndex()
+        public string NextTable()
         {
             lock (this)
             {
-                return tableIndex++;
+                return ":t" + tableIndex++;
             }
         }
         public Dictionary<string, object> Parameters

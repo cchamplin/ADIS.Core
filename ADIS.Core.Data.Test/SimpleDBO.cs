@@ -11,6 +11,7 @@ namespace ADIS.Core.Data.Test
     public class SimpleDBO : DataBoundObject<SimpleDBO>
     {
         protected Guid id;
+        protected Guid complexID;
         protected string propertyA;
         protected int propertyB;
 
@@ -27,6 +28,21 @@ namespace ADIS.Core.Data.Test
                 id = value;
             }
         }
+
+        [PropertyColumn("COMPLEX_ID")]
+        [PropertyLabel("ComplexID")]
+        public Guid ComplexID
+        {
+            get
+            {
+                return complexID;
+            }
+            set
+            {
+                complexID = value;
+            }
+        }
+
 
         [PropertyColumn("PROPERTY_A")]
         [PropertyLabel("Property A")]
