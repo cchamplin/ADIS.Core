@@ -21,7 +21,8 @@ namespace ADIS.Core.Data.LINQ
         string ResolveColumnAlias(PropertyTreeProperty member);
         string ResolveColumn(PropertyTreeProperty member);
         PropertyTree ResolveObject(PropertyTreeProperty member, string name, out bool newlyResolved);
-        PropertyTreeProperty ResolveDataProperty(List<string> objects, string name);
+        PropertyTreeProperty ResolveDataProperty(List<string> objects);
+        string NextTableAlias();
         void SetRoot(Type t, string name);
         PropertyTree PropertyTree
         {

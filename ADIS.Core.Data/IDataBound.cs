@@ -10,7 +10,7 @@ namespace ADIS.Core.Data
     {
         string TableName { get; }
         string Schema { get; }
-        string PrimaryKey { get; }
+        DataBoundProperty PrimaryKey { get; }
         Dictionary<string, DataProperty> Properties { get; }
         List<DataProperty> PropertyList { get; }
     }

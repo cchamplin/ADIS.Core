@@ -65,9 +65,12 @@ namespace ADIS.Core.Data.LINQ
                 tree = new PropertyTree(rootObject, t.Name, name,"t"+tableCount++);
                 foreach (var prop in rootObject.PropertyList)
                 {
-                    var propItem = new PropertyTreeProperty(tree, prop as DataBoundProperty);
-                    propItem.propertyAlias = "p" + propertyCount++;
-                    tree.children.Add(propItem);
+                    if (prop is DataBoundProperty)
+                    {
+                        var propItem = new PropertyTreeProperty(tree, prop as DataBoundProperty);
+                        propItem.propertyAlias = "p" + propertyCount++;
+                        tree.children.Add(propItem);
+                    }
                 }
              
             }
@@ -76,17 +79,48 @@ namespace ADIS.Core.Data.LINQ
                 throw new Exception("Query builder only providers functionality for DataBoundTypes");
             }
         }
-        public PropertyTreeProperty ResolveDataProperty(List<string> objects, string name)
+        public PropertyTreeProperty ResolveDataProperty(List<string> objects)
         {
             if (tree != null)
             {
-                if (objects.Count == 1)
+                if (objects.Count == 2)
                 {
-                    return tree.children.Where(x => x.property.Name == name).First();
+                    return tree.children.Where(x => x.property.Name == objects[1]).First();
                 }
                 else
                 {
-                    return null;
+                    var searchTree = tree;
+                    PropertyTreeProperty prop = null;
+                    for (int x = 1; x < objects.Count; x++)
+                    {
+                        prop = searchTree.children.Where(p => p.property.Name == objects[x]).First();
+                        if (prop.Columnar == false)
+                        {
+                            if (prop.objectTree == null)
+                            {
+                                bool newItem;
+                                if (!searchTree.selectedProperties.Contains(prop))
+                                    searchTree.selectedProperties.Add(prop);
+                                searchTree = this.ResolveObject(prop, prop.property.Name, out newItem);
+                                searchTree.projected = true;
+                            }
+                            else
+                            {
+                                if (!searchTree.selectedProperties.Contains(prop))
+                                    searchTree.selectedProperties.Add(prop);
+                                prop.objectTree.projected = true;
+                                searchTree = prop.objectTree;
+                            }
+                        }
+                        else
+                        {
+                            if (x < objects.Count - 1)
+                            {
+                                throw new Exception("Query engine does not support comparitors on non-DataBoundProperty object members");
+                            }
+                        }
+                    }
+                    return prop;
                 }
                 
             }
@@ -243,8 +277,8 @@ namespace ADIS.Core.Data.LINQ
         private static string ResolveColumnInternal(MemberInfo member)
         {
 
-            var dataMember = member.GetCustomAttributes(typeof(PropertyColumn), true)
-                .OfType<PropertyColumn>()
+            var dataMember = member.GetCustomAttributes(typeof(DataMember), true)
+                .OfType<DataMember>()
                 .FirstOrDefault();
 
             if (dataMember != null && dataMember.columnName != null)
@@ -254,6 +288,10 @@ namespace ADIS.Core.Data.LINQ
             return member.Name;
 
           
+        }
+        public string NextTableAlias()
+        {
+            return "t" + tableCount++;
         }
 
 
@@ -288,6 +326,10 @@ namespace ADIS.Core.Data.LINQ
             }
             newlyResolved = true;
             Type t = member.property.Type;
+            if (t.IsGenericType)
+            {
+                t = t.GetGenericArguments()[0];
+            }
             if (typeof(IDataBound).IsAssignableFrom(t))
             {
                 var constructor = TypeHelper.GetConstructor(t);
@@ -295,9 +337,12 @@ namespace ADIS.Core.Data.LINQ
                 var newTree = new PropertyTree(obj, t.Name, name, "t" + tableCount++);
                 foreach (var prop in obj.PropertyList)
                 {
-                    var propItem = new PropertyTreeProperty(newTree, prop as DataBoundProperty);
-                    propItem.propertyAlias = "p" + propertyCount++;
-                    newTree.children.Add(propItem);
+                    if (prop is DataBoundProperty)
+                    {
+                        var propItem = new PropertyTreeProperty(newTree, prop as DataBoundProperty);
+                        propItem.propertyAlias = "p" + propertyCount++;
+                        newTree.children.Add(propItem);
+                    }
                 }
                 member.objectTree = newTree;
                 return newTree;

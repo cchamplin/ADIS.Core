@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ADIS.Core.Data;
 namespace ADIS.Core.Data.Test
 {
-    [DataTable("Test","Sample","ID")]
+    [DataTable("Test","Sample")]
     [ObjectLabel("Sample")]
     public class SimpleDBO : DataBoundObject<SimpleDBO>
     {
@@ -14,8 +14,9 @@ namespace ADIS.Core.Data.Test
         protected Guid complexID;
         protected string propertyA;
         protected int propertyB;
+        protected bool propertyC;
 
-        [PropertyColumn("ID")]
+        [DataMember("ID", true)]
         [PropertyLabel("SampleID")]
         public Guid ID
         {
@@ -29,7 +30,7 @@ namespace ADIS.Core.Data.Test
             }
         }
 
-        [PropertyColumn("COMPLEX_ID")]
+        [DataMember("COMPLEX_ID")]
         [PropertyLabel("ComplexID")]
         public Guid ComplexID
         {
@@ -44,7 +45,7 @@ namespace ADIS.Core.Data.Test
         }
 
 
-        [PropertyColumn("PROPERTY_A")]
+        [DataMember("PROPERTY_A")]
         [PropertyLabel("Property A")]
         public String PropertyA
         {
@@ -58,7 +59,7 @@ namespace ADIS.Core.Data.Test
             }
         }
 
-        [PropertyColumn("PROPERTY_B")]
+        [DataMember("PROPERTY_B")]
         [PropertyLabel("Property B")]
         public int PropertyB
         {
@@ -69,6 +70,20 @@ namespace ADIS.Core.Data.Test
             set
             {
                 propertyB = value;
+            }
+        }
+
+        [DataMember("PROPERTY_C")]
+        [PropertyLabel("Property C")]
+        public bool PropertyC
+        {
+            get
+            {
+                return propertyC;
+            }
+            set
+            {
+                propertyC = value;
             }
         }
 

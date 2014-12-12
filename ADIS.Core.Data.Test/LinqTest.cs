@@ -10,6 +10,27 @@ namespace ADIS.Core.Data.Test
     [TestClass]
     public class LinqTest
     {
+
+        [TestMethod]
+        public void TestLinqActual()
+        {
+            var items = Data.GenerateComplexDBOs();
+
+            var subset = (from dbo in items
+                          where dbo.Last.StartsWith("Complex")
+                          && dbo.Related.RelatedProperty.StartsWith("Related")
+                          select dbo).ToList();
+
+            System.Diagnostics.Debug.WriteLine(subset.Count);
+
+
+            subset = (from dbo in items
+                      where dbo.Last.StartsWith("Complex")
+                      && dbo.Children.Any(x => x.PropertyC == true)
+                      select dbo).ToList();
+            System.Diagnostics.Debug.WriteLine(subset.Count);
+        }
+
         [TestMethod]
         public void TestBasicSelect()
         {
@@ -29,7 +50,19 @@ namespace ADIS.Core.Data.Test
 
             List<ComplexDBO> data = (from dbo in dbos
                                     where dbo.ID == Guid.Empty
-                                    select dbo).Expand("Related,Related/Simple").ToList();
+                                    select dbo).Expand("Children,Related/Simple").ToList();
+
+
+        }
+
+        [TestMethod]
+        public void TestSelectExpandWhere()
+        {
+            IQueryable<ComplexDBO> dbos = new SqlQueryable<ComplexDBO>();
+
+            List<ComplexDBO> data = (from dbo in dbos
+                                     where dbo.ID == Guid.Empty && dbo.Related.Simple.PropertyA == "Test"
+                                     select dbo).Expand("Children,Related/Simple").ToList();
 
 
         }

@@ -19,5 +19,26 @@ namespace ADIS.Core.Data
             this.fkColumn = fkColumn;
             this.keyColumn = keyColumn;
         }
+        public string Schema
+        {
+            get
+            {
+                return schema;
+            }
+        }
+        public string Table
+        {
+            get
+            {
+                return table;
+            }
+        }
+        public string FkColumn
+        {
+            get
+            {
+                return fkColumn;
+            }
+        }
     }
 }

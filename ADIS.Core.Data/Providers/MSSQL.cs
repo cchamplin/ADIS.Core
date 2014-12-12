@@ -22,7 +22,7 @@ namespace ADIS.Core.Data.Providers
             var query = new SelectFragmentContext();
             var table = query.SetTable(dbo.Schema, dbo.TableName);
             var condition = new PropertyCondition();
-            condition.SetPropertyLeft(table, dbo.BoundProperties[dbo.PrimaryKey]);
+            condition.SetPropertyLeft(table, dbo.PrimaryKey);
             condition.SetRight(keyValue);
             condition.Operation = op;
             query.AddCondition(condition);

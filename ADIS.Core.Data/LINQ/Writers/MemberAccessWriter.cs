@@ -142,8 +142,17 @@ namespace ADIS.Core.Data.LINQ.Writers
                 pathPrefixes.Add(new MemberRecord() { memberInfo = currentMemberExpression.Member, sourceType = currentMemberExpression.Member.DeclaringType });
                 if (currentMemberExpression.Expression is ParameterExpression)
                 {
-                     objectPrefixes.Add(((ParameterExpression)currentMemberExpression.Expression).Name);
+                    objectPrefixes.Add(currentMemberExpression.Member.Name);
+                    objectPrefixes.Add(((ParameterExpression)currentMemberExpression.Expression).Name);
                 }
+                else
+                {
+                    objectPrefixes.Add(currentMemberExpression.Member.Name);
+                }
+                //if (currentMemberExpression.Expression is PropertyExpression)
+                //{
+                //    objectPrefixes.Add(((ParameterExpression)currentMemberExpression.Expression).Name);
+                //}
                
                 var currentMember = currentMemberExpression.Expression as MemberExpression;
                 if (currentMember == null)
@@ -163,7 +172,7 @@ namespace ADIS.Core.Data.LINQ.Writers
                 prefix = string.Format("{0}/{1}", ((ParameterExpression)currentMemberExpression.Expression).Name, prefix);
             }
 
-            var member = memberNameResolver.ResolveDataProperty(objectPrefixes, currentMemberExpression.Member.Name);
+            var member = memberNameResolver.ResolveDataProperty(objectPrefixes);
             prefix = memberNameResolver.ResolveColumn(member);
 
             if (!IsMemberOfParameter(memberExpression))

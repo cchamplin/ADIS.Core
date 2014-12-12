@@ -25,67 +25,39 @@ namespace ADIS.Core.Data.LINQ.Writers
                     var treeProp = nameResolver.PropertyTree.children.Where(x => x.property.Name == prop.Name).First();
                     bool newlyResolved = false;
                     tree = nameResolver.ResolveObject(treeProp, prop.Name, out newlyResolved);
-                    if (newlyResolved)
-                    {
+                    //if (newlyResolved)
+                    //{
                         foreach (var child in tree.children)
                         {
-                            tree.selectedProperties.Add(child);
+                            if (!tree.selectedProperties.Contains(child))
+                            {
+                                tree.selectedProperties.Add(child);
+                            }
                         }
-                        BuildJoin(builder, nameResolver, tree, treeProp);
-                    }
+                        //BuildJoin(builder, nameResolver, tree, treeProp);
+                    //}
                     for (int x = 1; x < expansion.Type.Length; x++)
                     {
                         prop = expansion.Member[x];
                         treeProp = tree.children.Where(p => p.property.Name == prop.Name).First();
                         tree = nameResolver.ResolveObject(treeProp, prop.Name, out newlyResolved);
-                        if (newlyResolved)
-                        {
+                        //if (newlyResolved)
+                        //{
                             foreach (var child in tree.children)
                             {
-                                tree.selectedProperties.Add(child);
-
+                                if (!tree.selectedProperties.Contains(child))
+                                {
+                                    tree.selectedProperties.Add(child);
+                                }
                             }
-                            BuildJoin(builder, nameResolver, tree, treeProp);
-                        }
+                            //BuildJoin(builder, nameResolver, tree, treeProp);
+                        //}
                     }
                 }
             }
             return builder.ToString();
         }
-        private void BuildJoin(StringBuilder builder, INameResolver nameResolver, PropertyTree tree, PropertyTreeProperty treeProp) {
-            builder.Append(" LEFT JOIN ");
-            builder.Append(nameResolver.ResolveObjectAlias(tree));
-            builder.Append(" ON (");
-                    DataRelationship relationship = treeProp.property.Relationship;
-                    if (relationship is OneToManyRelationship) {
-                        builder.Append(tree.objectAlias);
-                        builder.Append(".");
-                        builder.Append(relationship.KeyColumn);
-                        builder.Append(" = ");
-                        builder.Append(treeProp.root.objectAlias);
-                        builder.Append(".");
-                        builder.Append(treeProp.root.dbo.PrimaryKey);
-                    }
-                    else if (relationship is ManyToManyRelationship) {
-                         builder.Append(tree.objectAlias);
-                        builder.Append(".");
-                        builder.Append(relationship.KeyColumn);
-                        builder.Append(" = ");
-                        builder.Append(treeProp.root.objectAlias);
-                        builder.Append(".");
-                        builder.Append(treeProp.root.dbo.PrimaryKey);
-                    }
-                    else if (relationship is ManyToOneRelationship) {
-                         builder.Append(tree.objectAlias);
-                        builder.Append(".");
-                        builder.Append(relationship.KeyColumn);
-                        builder.Append(" = ");
-                        builder.Append(treeProp.root.objectAlias);
-                        builder.Append(".");
-                        builder.Append(treeProp.root.dbo.PrimaryKey);
-                    }
-                    builder.Append(")");
-        }
+       
 
         public string WriteUriFragment(object value, INameResolver namedResolver)
         {

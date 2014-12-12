@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 namespace ADIS.Core.Data
 {
     [System.AttributeUsage(System.AttributeTargets.Property, AllowMultiple = false)]
-    public class PropertyColumn : Attribute
+    public class DataMember : Attribute
     {
         public string columnName;
-        public PropertyColumn(string name)
+        public bool primaryKey;
+        public DataMember(string columnName, bool primaryKey = false)
         {
-            this.columnName = name;
+            this.columnName = columnName;
+            this.primaryKey = primaryKey;
         }
     }
 }

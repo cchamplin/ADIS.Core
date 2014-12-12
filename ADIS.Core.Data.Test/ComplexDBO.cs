@@ -6,22 +6,25 @@ using System.Threading.Tasks;
 
 namespace ADIS.Core.Data.Test
 {
-    [DataTable("Test", "ComplexDBO", "ID")]
+    [DataTable("Test", "ComplexDBO")]
     [ObjectLabel("Complex")]
     public class ComplexDBO : DataBoundObject<ComplexDBO>
     {
 
-        [PropertyColumn("ID")]
+        [DataMember("ID",true)]
         [PropertyLabel("ComplexID")]
         public Guid ID { get; set; }
 
 
-        [PropertyColumn("FIRST_NAME")]
+        [DataMember("FIRST_NAME")]
         [PropertyLabel("FirstName")]
         public string Name { get; set; }
 
+        [DataMember("INT_ID")]
+        [PropertyLabel("IntID")]
+        public int IntID { get; set; }
 
-        [PropertyColumn("LAST_NAME")]
+        [DataMember("LAST_NAME")]
         [PropertyLabel("LastName")]
         public string Last { get; set; }
 

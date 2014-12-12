@@ -11,7 +11,6 @@ namespace ADIS.Core.Data
     {
         public string tableName;
         public string schema;
-        public string primaryKey;
         public DataTable(string name)
         {
             this.tableName = name;
@@ -20,12 +19,6 @@ namespace ADIS.Core.Data
         {
             this.schema = schema;
             this.tableName = name;
-        }
-        public DataTable(string schema, string name, string primaryKey)
-        {
-            this.schema = schema;
-            this.tableName = name;
-            this.primaryKey = primaryKey;
         }
     }
 }

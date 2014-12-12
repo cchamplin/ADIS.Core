@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ADIS.Core.Data.Test
 {
-    [DataTable("Test", "Related", "ID")]
+    [DataTable("Test", "Related")]
     [ObjectLabel("Related")]
     public class RelatedDBO : DataBoundObject<RelatedDBO>
     {
@@ -14,7 +14,7 @@ namespace ADIS.Core.Data.Test
         protected Guid complexID;
         protected string relatedProp;
 
-        [PropertyColumn("ID")]
+        [DataMember("ID",true)]
         [PropertyLabel("RelatedID")]
         public Guid ID
         {
@@ -28,7 +28,7 @@ namespace ADIS.Core.Data.Test
             }
         }
 
-        [PropertyColumn("COMPLEX_ID")]
+        [DataMember("COMPLEX_ID")]
         [PropertyLabel("ComplexID")]
         public Guid ComplexID
         {
@@ -43,7 +43,7 @@ namespace ADIS.Core.Data.Test
         }
 
 
-        [PropertyColumn("RELATED_PROP")]
+        [DataMember("RELATED_PROP")]
         [PropertyLabel("Related Property")]
         public String RelatedProperty
         {

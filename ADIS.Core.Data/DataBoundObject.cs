@@ -11,7 +11,12 @@ namespace ADIS.Core.Data
         
         protected static string tableName = null;
         protected static string schema = null;
-        protected static string primaryKey = null;
+        protected static DataBoundProperty primaryKey = null;
+
+        protected DateTime changeDate;
+        protected DateTime addDate;
+        protected Guid changeID;
+        protected Guid addID;
         
         public DataBoundObject() : base()
         {
@@ -24,7 +29,6 @@ namespace ADIS.Core.Data
                     {
                         tableName = ((DataTable)attr).tableName;
                         schema = ((DataTable)attr).schema;
-                        primaryKey = ((DataTable)attr).primaryKey;
                     }
                 }
             }
@@ -49,7 +53,19 @@ namespace ADIS.Core.Data
                     added = false;
                     foreach (Attribute attr in property.GetCustomAttributes(false))
                     {
-                        if (attr is PropertyLabel)
+                        if (attr is DataMember)
+                        {
+                            var prop = new DataBoundProperty(type, property);
+                            if (((DataMember)attr).primaryKey)
+                            {
+                                primaryKey = prop;
+                            }
+                            properties.Add(property.Name, prop);
+                            propertyList.Add(prop);
+                            added = true;
+                            continue;
+                        }
+                        else if (attr is OneToMany || attr is ManyToMany || attr is ManyToOne)
                         {
                             var prop = new DataBoundProperty(type, property);
                             properties.Add(property.Name, prop);
@@ -61,7 +77,7 @@ namespace ADIS.Core.Data
 
                     if (!added)
                     {
-                        var prop = new DataBoundProperty(type, property);
+                        var prop = new DataProperty(type, property);
                         properties.Add(property.Name, prop);
                         propertyList.Add(prop);
                     }
@@ -94,10 +110,62 @@ namespace ADIS.Core.Data
         }
 
         [DataExempt]
-        public string PrimaryKey
+        public DataBoundProperty PrimaryKey
         {
             get { return primaryKey; }
         }
-       
+
+        [DataMember(columnName:"CHANGE_DATE_TIME")]
+        [PropertyLabel("Change Date")]
+        public DateTime ChangeDateTime
+        {
+            get
+            {
+                return changeDate;
+            }
+            set
+            {
+                changeDate = value;
+            }
+        }
+        [DataMember(columnName: "CHANGE_ID")]
+        [PropertyLabel("Change ID")]
+        public Guid ChangeID
+        {
+            get
+            {
+                return changeID;
+            }
+            set
+            {
+                changeID = value;
+            }
+        }
+        [DataMember(columnName: "ADD_DATE_TIME")]
+        [PropertyLabel("Add Date")]
+        public DateTime AddDateTime
+        {
+            get
+            {
+                return addDate;
+            }
+            set
+            {
+                addDate = value;
+            }
+        }
+        [DataMember(columnName: "ADD_ID")]
+        [PropertyLabel("Add ID")]
+        public Guid AddID
+        {
+            get
+            {
+                return addID;
+            }
+            set
+            {
+                addID = value;
+            }
+        }
     }
 }
