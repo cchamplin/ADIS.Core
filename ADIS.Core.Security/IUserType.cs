@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ADIS.Core.Data.Security
+namespace ADIS.Core.Security
 {
-    class Role
+    public interface IUserType
     {
+        string GetType();
     }
 }

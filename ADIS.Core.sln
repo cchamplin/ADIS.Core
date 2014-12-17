@@ -5,9 +5,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADIS.Core.Data", "ADIS.Core
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADIS.Core.Data.Test", "ADIS.Core.Data.Test\ADIS.Core.Data.Test.csproj", "{97FCC76D-367C-46AC-95F1-B9D06CAFAB03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADIS.Core.Authentication", "ADIS.Core.Authentication\ADIS.Core.Authentication.csproj", "{6748226A-2DCC-4201-AEA1-6398FACEA6AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADIS.Core.Security", "ADIS.Core.Security\ADIS.Core.Security.csproj", "{6748226A-2DCC-4201-AEA1-6398FACEA6AF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADIS.Core.Configuration", "ADIS.Core.Configuration\ADIS.Core.Configuration.csproj", "{8EA53266-2075-4393-8725-4B6DD709395C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADIS.Organization", "ADIS.Organization\ADIS.Organization.csproj", "{00646488-DC72-428A-9AA6-3D582B649CC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{8EA53266-2075-4393-8725-4B6DD709395C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EA53266-2075-4393-8725-4B6DD709395C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EA53266-2075-4393-8725-4B6DD709395C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00646488-DC72-428A-9AA6-3D582B649CC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00646488-DC72-428A-9AA6-3D582B649CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00646488-DC72-428A-9AA6-3D582B649CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00646488-DC72-428A-9AA6-3D582B649CC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

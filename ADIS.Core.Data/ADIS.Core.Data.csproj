@@ -130,7 +130,8 @@
     <Compile Include="DataProperty.cs" />
     <Compile Include="Providers\IDataProvider.cs" />
     <Compile Include="Providers\MSSQL.cs" />
-    <Compile Include="Security\Role.cs" />
+    <Compile Include="Security\DataSecurableType.cs" />
+    <Compile Include="Security\SecurableTypes.cs" />
     <Compile Include="SQL\DBJoin.cs" />
     <Compile Include="SQL\DBSelect.cs" />
     <Compile Include="SQL\Fragments\InnerJoinFragment.cs" />
@@ -150,6 +151,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\ADIS.Core.Authentication\ADIS.Core.Security.csproj">
+      <Project>{6748226a-2dcc-4201-aea1-6398facea6af}</Project>
+      <Name>ADIS.Core.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ADIS.Core.Configuration\ADIS.Core.Configuration.csproj">
       <Project>{8ea53266-2075-4393-8725-4b6dd709395c}</Project>
       <Name>ADIS.Core.Configuration</Name>
