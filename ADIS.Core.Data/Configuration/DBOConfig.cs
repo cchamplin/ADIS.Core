@@ -8,7 +8,7 @@ using ADIS.Core.Configuration;
 namespace ADIS.Core.Data.Configuration
 {
     [ConfigurationEntity(ConfigurationEntityType.DataBound,"DBOConfig","ADIS_DBO")]
-    public class DBOConfig : ConfigurationEntityBase<DBOConfig>
+    public class DBOConfig
     {
         private DBOConfig()
         {
@@ -40,7 +40,6 @@ namespace ADIS.Core.Data.Configuration
                 config.Assembly = assembly;
                 config.Route = route;
                 config.Name = @namespace;
-                items.Add(config);
             }
         }
     }

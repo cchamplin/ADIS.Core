@@ -11,7 +11,7 @@ namespace ADIS.Core.Data.Security
     {
         private static DataSecurableType doType;
         private static DataSecurableType proptype;
-        public ISecurableType DATA_OBJECT
+        public static ISecurableType DATA_OBJECT
         {
             get
             {
@@ -20,7 +20,7 @@ namespace ADIS.Core.Data.Security
                 return doType;
             }
         }
-        public ISecurableType DATA_PROPERTY
+        public static ISecurableType DATA_PROPERTY
         {
             get
             {

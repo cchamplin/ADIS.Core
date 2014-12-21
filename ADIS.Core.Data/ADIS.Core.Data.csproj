@@ -151,7 +151,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\ADIS.Core.Authentication\ADIS.Core.Security.csproj">
+    <ProjectReference Include="..\ADIS.Core.Security\ADIS.Core.Security.csproj">
       <Project>{6748226a-2dcc-4201-aea1-6398facea6af}</Project>
       <Name>ADIS.Core.Security</Name>
     </ProjectReference>

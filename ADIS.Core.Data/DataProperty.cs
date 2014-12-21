@@ -44,6 +44,20 @@ namespace ADIS.Core.Data
                 return name;
             }
         }
+        public PropertySetter Set
+        {
+            get
+            {
+                return setter;
+            }
+        }
+        public PropertyGetter Get
+        {
+            get
+            {
+                return getter;
+            }
+        }
 
         public DataProperty(Type t, PropertyInfo pi)
         {
