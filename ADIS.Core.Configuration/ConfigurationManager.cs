@@ -9,12 +9,12 @@ namespace ADIS.Core.Configuration
     public class ConfigurationManager
     {
         private static ConfigurationManager instance;
-        protected Dictionary<string, ConfigurationEntity> configurations;
+        protected Dictionary<Type, dynamic> configurations;
         private ConfigurationManager()
         {
-            configurations = new Dictionary<string, ConfigurationEntity>();
+            configurations = new Dictionary<Type, dynamic>();
         }
-        public ConfigurationManager Current
+        public static ConfigurationManager Current
         {
             get
             {
@@ -25,20 +25,23 @@ namespace ADIS.Core.Configuration
                 return instance;
             }
         }
-        private ConfigurationManager LoadConfiguration()
+        private static ConfigurationManager LoadConfiguration()
         {
-            return null;
+            return new ConfigurationManager();
         }
 
-        public ConfigurationEntity this[string item]
+        public dynamic Bind<T>()
         {
-            get
-            {
-                return configurations[item];
-            }
+            return configurations[typeof(T)];
         }
+        public IList<dynamic> BindAll<T>()
+        {
+            var result = new ConfigurationItemList();
+            return (IList<dynamic>)result;
+        }
+	
 
-        public void AddConfiguration(string name, ConfigurationEntity configuration)
+        public void AddConfiguration(string name, dynamic configuration)
         {
         }
     }

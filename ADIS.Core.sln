@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADIS.Core.Configuration", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADIS.Organization", "ADIS.Organization\ADIS.Organization.csproj", "{00646488-DC72-428A-9AA6-3D582B649CC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADIS.Core.Configuration.Test", "ADIS.Core.Configuration.Test\ADIS.Core.Configuration.Test.csproj", "{78EBA157-E488-4137-A595-C9CB8ABFE2D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{00646488-DC72-428A-9AA6-3D582B649CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00646488-DC72-428A-9AA6-3D582B649CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00646488-DC72-428A-9AA6-3D582B649CC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78EBA157-E488-4137-A595-C9CB8ABFE2D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78EBA157-E488-4137-A595-C9CB8ABFE2D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78EBA157-E488-4137-A595-C9CB8ABFE2D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78EBA157-E488-4137-A595-C9CB8ABFE2D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

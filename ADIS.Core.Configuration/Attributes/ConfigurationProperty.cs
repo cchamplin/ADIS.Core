@@ -9,16 +9,16 @@ namespace ADIS.Core.Configuration
     [System.AttributeUsage(System.AttributeTargets.Property, AllowMultiple = false)]
     public class ConfigurationProperty : Attribute
     {
-        protected string alias;
-        public ConfigurationProperty(string alias)
+        protected string column;
+        public ConfigurationProperty(string columnName)
         {
-            this.alias = alias;
+            this.column = columnName;
         }
-        public string Alias
+        public string Column
         {
             get
             {
-                return alias;
+                return column;
             }
         }
     }
