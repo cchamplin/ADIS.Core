@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ADIS.Core.Security
 {
-    enum AccessAvailabilityType
+    public enum AccessAvailabilityType
     {
         SPECIFIC_DATE_RANGE,
         WEEKDAY,

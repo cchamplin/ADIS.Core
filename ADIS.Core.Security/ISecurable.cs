@@ -7,7 +7,7 @@ namespace ADIS.Core.Security
 {
     public interface ISecurable
     {
-        Guid ID;
+        Guid ID { get; }
         object Securable { get; set; }
         Guid SecurableID { get; set; }
         AccessType AccessType { get; set; }

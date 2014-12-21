@@ -7,7 +7,7 @@ namespace Organization
 {
     public interface IUnitType
     {
-        string Name { get; protected set; }
-        string MachineName { get; protected set; }
+        string Name { get; }
+        string MachineName { get; }
     }
 }

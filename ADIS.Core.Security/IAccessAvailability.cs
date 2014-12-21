@@ -7,11 +7,11 @@ namespace ADIS.Core.Security
 {
     public interface IAccessAvailability
     {
-        Guid ID { get; protected set; }
-        bool Allow { get; protected set; }
-        AccessAvailabilityType AvailabilityType { get; protected set; }
-        DateTime AvailabilityStart { get; protected set; }
-        TimeSpan AvailabilityDuration { get; protected set; }
+        Guid ID { get; }
+        bool Allow { get; }
+        AccessAvailabilityType AvailabilityType { get;  }
+        DateTime AvailabilityStart { get;  }
+        TimeSpan AvailabilityDuration { get; }
         bool Commit(User u, AccessAvailabilityType type, DateTime start, TimeSpan duration, bool allow = true);
         bool Commit(User u, AccessAvailabilityType type, int day, DateTime start, TimeSpan duration, bool allow = true);
     }

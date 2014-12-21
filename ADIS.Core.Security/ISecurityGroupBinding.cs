@@ -7,7 +7,7 @@ namespace ADIS.Core.Security
 {
     public interface ISecurityGroupBinding
     {
-        string MachineName { get; protected set; }
-        string Name { get; protected set; }
+        string MachineName { get; }
+        string Name { get; }
     }
 }
