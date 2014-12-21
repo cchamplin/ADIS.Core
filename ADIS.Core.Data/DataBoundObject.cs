@@ -27,8 +27,8 @@ namespace ADIS.Core.Data
                 {
                     if (attr is DataTable)
                     {
-                        tableName = ((DataTable)attr).tableName;
-                        schema = ((DataTable)attr).schema;
+                        tableName = ((DataTable)attr).TableName;
+                        schema = ((DataTable)attr).Schema;
                     }
                 }
             }
@@ -56,7 +56,7 @@ namespace ADIS.Core.Data
                         if (attr is DataMember)
                         {
                             var prop = new DataBoundProperty(type, property);
-                            if (((DataMember)attr).primaryKey)
+                            if (((DataMember)attr).PrimaryKey)
                             {
                                 primaryKey = prop;
                             }

@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ADIS.Core.Configuration")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("PSD")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ADIS.Core.Configuration")]
-[assembly: AssemblyCopyright("Copyright © PSD 2014")]
+[assembly: AssemblyCopyright("Copyright © 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -16,7 +16,7 @@ namespace ADIS.Core.Data
         {
              foreach (Attribute attr in pi.GetCustomAttributes(false)) {
                if (attr is DataMember) {
-                   this.columnName = ((DataMember)attr).columnName;
+                   this.columnName = ((DataMember)attr).ColumnName;
                }
                if (attr is OneToMany)
                {

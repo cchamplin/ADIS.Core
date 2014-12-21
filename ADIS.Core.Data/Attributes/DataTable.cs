@@ -9,16 +9,31 @@ namespace ADIS.Core.Data
     [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
     public class DataTable : Attribute
     {
-        public string tableName;
-        public string schema;
+        protected string tableName;
+        protected string schema;
         public DataTable(string name)
         {
             this.tableName = name;
+            this.schema = null;
         }
         public DataTable(string schema, string name)
         {
             this.schema = schema;
             this.tableName = name;
+        }
+        public string TableName
+        {
+            get
+            {
+                return tableName;
+            }
+        }
+        public string Schema
+        {
+            get
+            {
+                return schema;
+            }
         }
     }
 }

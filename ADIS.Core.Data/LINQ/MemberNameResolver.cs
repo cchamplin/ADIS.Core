@@ -281,9 +281,9 @@ namespace ADIS.Core.Data.LINQ
                 .OfType<DataMember>()
                 .FirstOrDefault();
 
-            if (dataMember != null && dataMember.columnName != null)
+            if (dataMember != null && dataMember.ColumnName != null)
             {
-                return dataMember.columnName;
+                return dataMember.ColumnName;
             }
             return member.Name;
 

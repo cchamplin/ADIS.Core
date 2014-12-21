@@ -12,7 +12,8 @@ namespace ADIS.Core.Configuration
         protected ConfigurationEntityType type;
         protected string name;
         protected string tableName;
-        public ConfigurationEntity(ConfigurationEntityType type, string name, string tableName = null)
+        protected string schema;
+        public ConfigurationEntity(ConfigurationEntityType type, string name, string tableName = null, string schema = null)
         {
             this.type = type;
             this.name = name;
@@ -34,6 +35,13 @@ namespace ADIS.Core.Configuration
             get
             {
                 return name;
+            }
+        }
+        public string Schema
+        {
+            get
+            {
+                return schema;
             }
         }
         public string TableName
