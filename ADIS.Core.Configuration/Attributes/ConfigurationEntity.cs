@@ -22,6 +22,10 @@ namespace ADIS.Core.Configuration
                 throw new Exception("Data bound configuratio entities must provide a table name");
             }
             this.tableName = tableName;
+            if (this.schema == null)
+            {
+                this.schema = "adis";
+            }
         }
         public ConfigurationEntityType Type
         {
@@ -30,6 +34,7 @@ namespace ADIS.Core.Configuration
                 return type;
             }
         }
+      
         public string Name
         {
             get

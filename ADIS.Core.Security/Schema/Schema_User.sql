@@ -1,0 +1,17 @@
+﻿CREATE TABLE [adis].[ADIS_USER](
+	[USER_GU] [uniqueidentifier] NOT NULL PRIMARY KEY,
+	[LOGIN_NAME] [nvarchar](50) NOT NULL,
+	[PASSWORD] [nvarchar](255) NULL,
+	[PASSWORD_SALT] [nvarchar](255) NULL,
+	[IS_ADMINISTRATOR] [bit] NOT NULL,
+	[USER_TYPE] [uniqueidentifier] NOT NULL,
+	[CHANGE_DATE] [smalldatetime] NOT NULL,
+	[ADDED_DATE] [smalldatetime] NOT NULL,
+	[ADDED_GU] [uniqueidentifier] NOT NULL,
+	[CHANGED_GU] [uniqueidentifier] NOT NULL,
+	[LAST_LOGIN] [smalldatetime] NOT NULL,
+	[FIRST_LOGIN] [smalldatetime] NOT NULL,
+	[EXPIRES] [bit] NOT NULL,
+	[EXPIRES_DATE] [smalldatetime] NULL,
+	[NUM_LOGINS] [int] NOT NULL,
+	[BINDING_TYPE] [nvarchar](50) NOT NULL);

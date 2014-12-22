@@ -40,8 +40,40 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComponentServices.cs" />
+    <Compile Include="Database\DbDataType.cs" />
+    <Compile Include="Database\DbRowReader.cs" />
+    <Compile Include="Database\IDatabaseProvider.cs" />
+    <Compile Include="Database\MSSqlDatabaseProvider.cs" />
+    <Compile Include="Database\Readers\BooleanReader.cs" />
+    <Compile Include="Database\Readers\ByteArrayReader.cs" />
+    <Compile Include="Database\Readers\ByteReader.cs" />
+    <Compile Include="Database\Readers\CharReader.cs" />
+    <Compile Include="Database\Readers\DateTimeReader.cs" />
+    <Compile Include="Database\Readers\DecimalReader.cs" />
+    <Compile Include="Database\Readers\DoubleReader.cs" />
+    <Compile Include="Database\Readers\GuidReader.cs" />
+    <Compile Include="Database\Readers\Int16Reader.cs" />
+    <Compile Include="Database\Readers\Int32Reader.cs" />
+    <Compile Include="Database\Readers\Int64Reader.cs" />
+    <Compile Include="Database\Readers\ITypedReader.cs" />
+    <Compile Include="Database\Readers\NullableByteReader.cs" />
+    <Compile Include="Database\Readers\NullableCharReader.cs" />
+    <Compile Include="Database\Readers\NullableDateTimeReader.cs" />
+    <Compile Include="Database\Readers\NullableDecimalReader.cs" />
+    <Compile Include="Database\Readers\NullableDoubleReader.cs" />
+    <Compile Include="Database\Readers\NullableGuidReader.cs" />
+    <Compile Include="Database\Readers\NullableInt16Reader.cs" />
+    <Compile Include="Database\Readers\NullableInt32Reader.cs" />
+    <Compile Include="Database\Readers\NullableInt64Reader.cs" />
+    <Compile Include="Database\Readers\NullableSingleReader.cs" />
+    <Compile Include="Database\Readers\NullableValueReader.cs" />
+    <Compile Include="Database\Readers\SingleReader.cs" />
+    <Compile Include="Database\Readers\StringReader.cs" />
+    <Compile Include="Database\Readers\ValueReader.cs" />
+    <Compile Include="Database\RowReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceContainer.cs" />
+    <Compile Include="TaskExecutorFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

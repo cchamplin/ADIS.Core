@@ -152,6 +152,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\ADIS.Core.ComponentServices\ADIS.Core.ComponentServices.csproj">
+      <Project>{a7f89434-2290-485b-a66c-dbb8ce15a145}</Project>
+      <Name>ADIS.Core.ComponentServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ADIS.Core.Security\ADIS.Core.Security.csproj">
       <Project>{6748226a-2dcc-4201-aea1-6398facea6af}</Project>
       <Name>ADIS.Core.Security</Name>

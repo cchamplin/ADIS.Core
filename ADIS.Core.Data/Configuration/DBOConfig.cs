@@ -10,20 +10,23 @@ namespace ADIS.Core.Data.Configuration
     [ConfigurationEntity(ConfigurationEntityType.DataBound,"DBOConfig","ADIS_DBO")]
     public class DBOConfig
     {
-        private DBOConfig()
+        public DBOConfig()
         {
         }
+        [ConfigurationProperty("DBO_GU",true)]
+        public Guid ID { get; protected set; }
 
-        [ConfigurationProperty("NAME")]
+
+        [ConfigurationProperty("NAME",255)]
         public string Name { get; set; }
 
-        [ConfigurationProperty("NAMESPACE")]
+        [ConfigurationProperty("NAMESPACE",255)]
         public string Namespace { get; set; }
 
-        [ConfigurationProperty("ROUTE")]
+        [ConfigurationProperty("ROUTE",255)]
         public string Route { get; set; }
 
-        [ConfigurationProperty("ASSEMBLY")]
+        [ConfigurationProperty("ASSEMBLY",255)]
         public string Assembly { get; set; }
 
         public void RegisterDBO(string @namespace, string route, object dbo)

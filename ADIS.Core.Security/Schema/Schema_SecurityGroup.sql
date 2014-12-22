@@ -1,0 +1,5 @@
+﻿CREATE TABLE [adis].[ADIS_SECURITY_GROUP](
+	[SECURITY_GROUP_GU] [uniqueidentifier] NOT NULL PRIMARY KEY,
+	[NAME] [nvarchar](50) NOT NULL,
+	[BINDING_TYPE] [nvarchar](50) NOT NULL,
+	[PARENT_SECURITY_GRP_GU] [uniqueidentifier] NULL);

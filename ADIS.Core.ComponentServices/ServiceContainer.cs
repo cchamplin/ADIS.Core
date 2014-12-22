@@ -21,23 +21,35 @@ namespace ADIS.Core.ComponentServices
             }
             throw new Exception("Unregistered service type requested");
         }
-        public void RegisterOrReplace(object service)
+        public void RegisterOrReplace(Type @interface, object service)
         {
             lock (services)
             {
-                if (services.ContainsKey(service.GetType()))
+                if (services.ContainsKey(@interface))
                 {
-                    services[service.GetType()] = service;
+                    services[@interface] = service;
                 }
                 else
                 {
-                    services.Add(service.GetType(), service);
+                    services.Add(@interface, service);
                 }
             }
         }
-        public bool ServiceTypeRegistered(Type t)
+        public void Register(Type @interface, object service)
         {
-            return services.ContainsKey(t);
+            lock (services)
+            {
+                if (!services.ContainsKey(@interface))
+                {
+                    services.Add(@interface, service);
+                    return;
+                }
+            }
+            throw new Exception("Service already registered");
+        }
+        public bool ServiceTypeRegistered(Type @interface)
+        {
+            return services.ContainsKey(@interface);
         }
         public bool ServiceRegistered(object service)
         {
@@ -48,17 +60,6 @@ namespace ADIS.Core.ComponentServices
             return false;
         }
         
-        public void Register(object service)
-        {
-            lock (services)
-            {
-                if (!services.ContainsKey(service.GetType()))
-                {
-                    services.Add(service.GetType(), service);
-                    return;
-                }
-            }
-            throw new Exception("Service already registered");
-        }
+        
     }
 }

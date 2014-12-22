@@ -129,6 +129,7 @@ namespace ADIS.Core.Data
         public DataProperty(Type t, FieldInfo fi)
         {
             this.type = fi.FieldType;
+            this.name = fi.Name;
             foreach (Attribute attr in fi.GetCustomAttributes(false))
             {
                 if (attr is PropertyLabel)

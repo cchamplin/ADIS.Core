@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ADIS.Core.Configuration
+namespace ADIS.Core.Configuration.Test
 {
-
-    public enum ConfigurationEntityType
+    public interface ITestService
     {
-        DataBound,
-        FileBound,
-        Serialized
+        void DoTest(string valueSD);
     }
 }

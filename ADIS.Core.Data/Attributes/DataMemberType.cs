@@ -4,18 +4,19 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ADIS.Core.ComponentServices;
 
 namespace ADIS.Core.Data
 {
     [System.AttributeUsage(System.AttributeTargets.Property, AllowMultiple = false)]
     public class DataMemberType : Attribute
     {
-        protected SqlDbType type;
-        public DataMemberType(SqlDbType type)
+        protected DbDataType type;
+        public DataMemberType(DbDataType type)
         {
             this.type = type;
         }
-        public SqlDbType Type
+        public DbDataType Type
         {
             get
             {

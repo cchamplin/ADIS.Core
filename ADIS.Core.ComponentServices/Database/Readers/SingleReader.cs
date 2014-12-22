@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ADIS.Core.Configuration
+namespace ADIS.Core.ComponentServices.Database.Readers
 {
-
-    public enum ConfigurationEntityType
+    class SingleReader
     {
-        DataBound,
-        FileBound,
-        Serialized
     }
 }

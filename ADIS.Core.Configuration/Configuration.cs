@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Common;
 
 namespace ADIS.Core.Configuration
 {
@@ -20,7 +21,101 @@ namespace ADIS.Core.Configuration
 
         internal static Configuration FromInstance(object instance) {
             var result = new Configuration(instance.GetType(),instance);
+            result.added = true;
             return result;
+        }
+        public void Commit(string tableName, DbConnection connection, DbTransaction transaction)
+        {
+            if (added)
+            {
+                var accessors = configItems[t];
+                DbCommand cmd = connection.CreateCommand();
+                cmd.Transaction = transaction;
+                StringBuilder cmdString = new StringBuilder();
+                cmdString.Append("INSERT INTO ");
+                cmdString.Append(tableName);
+                cmdString.Append(" (");
+                var accessor = accessors[0];
+                cmdString.Append('[');
+                cmdString.Append(accessor.ConfigurationProperty.Column);
+                cmdString.Append(']');
+                for (int x = 1; x < accessors.Count; x++)
+                {
+                    accessor = accessors[x];
+                    cmdString.Append(", ");
+                    cmdString.Append('[');
+                    cmdString.Append(accessor.ConfigurationProperty.Column);
+                    cmdString.Append(']');
+
+                }
+                cmdString.Append(") VALUES (");
+                accessor = accessors[0];
+                cmdString.Append("@p0");
+
+                var param = cmd.CreateParameter();
+                param.ParameterName = "@p0";
+                param.Value = accessor.Get(instance);
+                cmd.Parameters.Add(param);
+                for (int x = 1; x < accessors.Count; x++)
+                {
+                    accessor = accessors[x];
+                    cmdString.Append(", ");
+                    cmdString.Append("@p");
+                    cmdString.Append(x);
+                    param = cmd.CreateParameter();
+                    param.ParameterName = "@p"+x;
+                    param.Value = accessor.Get(instance);
+                    cmd.Parameters.Add(param);
+
+                }
+                cmdString.Append(");");
+                System.Diagnostics.Debug.WriteLine("Running SQL : " + cmdString.ToString());
+                cmd.CommandText = cmdString.ToString();
+                cmd.ExecuteNonQuery();
+                added = false;
+            }
+            if (isDirty)
+            {
+                var accessors = configItems[t];
+                DbCommand cmd = connection.CreateCommand();
+                cmd.Transaction = transaction;
+                StringBuilder cmdString = new StringBuilder();
+                cmdString.Append("UPDATE ");
+                cmdString.Append(tableName);
+                cmdString.Append(" SET");
+                var accessor = accessors[0];
+                cmdString.Append('[');
+                cmdString.Append(accessor.ConfigurationProperty.Column);
+                cmdString.Append("]=");
+                cmdString.Append("@p0");
+                var param = cmd.CreateParameter();
+                param.ParameterName = "@p0";
+                param.Value = accessor.Get(instance);
+                cmd.Parameters.Add(param);
+                for (int x = 1; x < accessors.Count; x++)
+                {
+                    accessor = accessors[x];
+                    cmdString.Append(", ");
+                    cmdString.Append('[');
+                    cmdString.Append(accessor.ConfigurationProperty.Column);
+                    cmdString.Append("]=");
+                    cmdString.Append("@p");
+                    cmdString.Append(x);
+                    cmdString.Append(", ");
+
+                    param = cmd.CreateParameter();
+                    param.ParameterName = "@p" + x;
+                    param.Value = accessor.Get(instance);
+                    cmd.Parameters.Add(param);
+
+                }
+                cmdString.Append(";");
+
+                cmd.CommandText = cmdString.ToString();
+                System.Diagnostics.Debug.WriteLine("Running SQL : " + cmdString.ToString());
+                cmd.ExecuteNonQuery();
+                isDirty = false;
+            }
         }
         private Configuration(Type t, object instance)
         {
@@ -29,12 +124,14 @@ namespace ADIS.Core.Configuration
             {
                 lock (configItems)
                 {
-                    var props = t.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                    var props = t.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                     var accessors = new List<TypeHelper.PropertyAccessor>();
                     foreach (var prop in props)
                     {
-                        accessors.Add(new TypeHelper.PropertyAccessor(t, prop));
+                        var accessor = new TypeHelper.PropertyAccessor(t, prop);
+                        accessors.Add(accessor);
                     }
+
                     configItems.Add(t, accessors);
                 }
             }
@@ -47,7 +144,7 @@ namespace ADIS.Core.Configuration
             {
                 lock (configItems)
                 {
-                    var props = t.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                    var props = t.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                     var accessors = new List<TypeHelper.PropertyAccessor>();
                     foreach (var prop in props)
                     {

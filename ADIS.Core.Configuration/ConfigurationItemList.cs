@@ -10,9 +10,14 @@ namespace ADIS.Core.Configuration
     internal class ConfigurationItemList : IList<object>
     {
         private List<dynamic> data;
+        public object locker;
+        internal List<Guid> removals;
+
         public ConfigurationItemList()
         {
+            locker = new object();
             data = new List<dynamic>();
+            removals = new List<Guid>();
         }
        
         public void Add(dynamic item)
@@ -48,11 +53,14 @@ namespace ADIS.Core.Configuration
         public void RemoveAt(int index)
         {
             data[index].removed = true;
+            removals.Add(data[index].ID);
             data.RemoveAt(index);
         }
 
         public bool Remove(dynamic item)
         {
+            removals.Add(item.ID);
+            item.removed = true;
             return data.Remove(item);
         }
 

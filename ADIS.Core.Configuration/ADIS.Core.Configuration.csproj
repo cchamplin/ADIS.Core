@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FastSerialize, Version=1.0.0.0, Culture=neutral, PublicKeyToken=abc7035e0ebf3a30, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\FastSerialize\FastSerialize\bin\Release4.0\FastSerialize.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,8 +50,18 @@
     <Compile Include="ConfigurationEntityType.cs" />
     <Compile Include="ConfigurationItemList.cs" />
     <Compile Include="ConfigurationManager.cs" />
+    <Compile Include="ConnectionStringConfigRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceConfigRecord.cs" />
+    <Compile Include="ServiceContainerConfigRecord.cs" />
+    <Compile Include="TaskConfigRecord.cs" />
     <Compile Include="Util\TypeHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ADIS.Core.ComponentServices\ADIS.Core.ComponentServices.csproj">
+      <Project>{a7f89434-2290-485b-a66c-dbb8ce15a145}</Project>
+      <Name>ADIS.Core.ComponentServices</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

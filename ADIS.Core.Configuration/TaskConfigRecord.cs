@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace ADIS.Core.Configuration
 {
-
-    public enum ConfigurationEntityType
+    class TaskConfigRecord
     {
-        DataBound,
-        FileBound,
-        Serialized
     }
 }

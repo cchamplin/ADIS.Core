@@ -4,18 +4,19 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ADIS.Core.ComponentServices;
 
 namespace ADIS.Core.Configuration
 {
     [System.AttributeUsage(System.AttributeTargets.Property, AllowMultiple = false)]
     public class ConfigurationPropertyType : Attribute
     {
-        protected SqlDbType type;
-        public ConfigurationPropertyType(SqlDbType type)
+        protected DbDataType type;
+        public ConfigurationPropertyType(DbDataType type)
         {
             this.type = type;
         }
-        public SqlDbType Type
+        public DbDataType Type
         {
             get
             {

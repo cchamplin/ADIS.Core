@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using ADIS.Core.ComponentServices;
 
 namespace ADIS.Core.Configuration.Util
 {
@@ -72,6 +73,31 @@ namespace ADIS.Core.Configuration.Util
             protected bool isList;
             protected bool isDictionary;
             protected string name;
+            protected ConfigurationProperty configProp = null;
+            protected bool hasDataType;
+            protected DbDataType dataType = DbDataType.INT;
+            public ConfigurationProperty ConfigurationProperty
+            {
+                get
+                {
+                    return configProp;
+                }
+                
+            }
+            public bool HasDataType
+            {
+                get
+                {
+                    return hasDataType;
+                }
+            }
+            public DbDataType DataType
+            {
+                get
+                {
+                    return dataType;
+                }
+            }
             public string Name
             {
                 get
@@ -97,6 +123,22 @@ namespace ADIS.Core.Configuration.Util
             {
                 name = pi.Name;
                 type = t;
+
+                 var attributes = pi.GetCustomAttributes();
+                 foreach (var attr in attributes)
+                 {
+                     if (attr is ConfigurationProperty)
+                     {
+                         configProp = attr as ConfigurationProperty;
+                     }
+                     if (attr is ConfigurationPropertyType)
+                     {
+                         dataType = ((ConfigurationPropertyType)attr).Type;
+                         hasDataType = true;
+                     }
+                 }
+
+
                 if (this.type.IsGenericType)
                 {
                     foreach (var i in type.GetInterfaces())
@@ -129,7 +171,8 @@ namespace ADIS.Core.Configuration.Util
                     TypeHelper.Cast(gen, t, loc);
                     gen.Emit(System.Reflection.Emit.OpCodes.Ldarg_1);
                     TypeHelper.Cast(gen, pi.PropertyType, null);
-                    gen.EmitCall(t.IsValueType ? OpCodes.Call : OpCodes.Callvirt, pi.GetSetMethod(), null);
+                    
+                    gen.EmitCall(t.IsValueType ? OpCodes.Call : OpCodes.Callvirt, pi.GetSetMethod(true), null);
                     gen.Emit(System.Reflection.Emit.OpCodes.Ret);
                     setter = (PropertySetter)method.CreateDelegate(typeof(PropertySetter));
                 }
@@ -157,6 +200,19 @@ namespace ADIS.Core.Configuration.Util
             {
                 name = fi.Name;
                 type = t;
+                var attributes = fi.GetCustomAttributes();
+                foreach (var attr in attributes)
+                {
+                    if (attr is ConfigurationProperty)
+                    {
+                        configProp = attr as ConfigurationProperty;
+                    }
+                    if (attr is ConfigurationPropertyType)
+                    {
+                        dataType = ((ConfigurationPropertyType)attr).Type;
+                        hasDataType = true;
+                    }
+                }
                 if (this.type.IsGenericType)
                 {
                     foreach (var i in type.GetInterfaces())

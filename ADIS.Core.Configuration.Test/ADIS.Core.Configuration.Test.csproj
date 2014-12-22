@@ -52,14 +52,24 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Confiuration.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="ITestService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleConfig.cs" />
+    <Compile Include="TestService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ADIS.Core.ComponentServices\ADIS.Core.ComponentServices.csproj">
+      <Project>{a7f89434-2290-485b-a66c-dbb8ce15a145}</Project>
+      <Name>ADIS.Core.ComponentServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ADIS.Core.Configuration\ADIS.Core.Configuration.csproj">
       <Project>{8ea53266-2075-4393-8725-4b6dd709395c}</Project>
       <Name>ADIS.Core.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ADIS.Core.Data\ADIS.Core.Data.csproj">
+      <Project>{d6d799c8-dce9-47c2-af22-adb152a9051b}</Project>
+      <Name>ADIS.Core.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
