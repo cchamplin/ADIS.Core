@@ -65,6 +65,12 @@ namespace ADIS.Core.Configuration.Test
             var cm = ConfigurationManager.Current;
             var configItems = cm.BindAll<DBOConfig>(false);
 
+            foreach (dynamic i in configItems)
+            {
+                string message = i.ID.ToString() + " " + i.Name.ToString();
+                System.Diagnostics.Debug.WriteLine(message);
+            }
+
             DBOConfig item = new DBOConfig();
             item.Assembly = "Test.Assembly";
             item.Name = "TestName";
@@ -78,7 +84,9 @@ namespace ADIS.Core.Configuration.Test
             item.Namespace = "TestNS2";
             configItems.Add(item);
 
-            cm.SaveAll<DBOConfig>();
+
+
+            //cm.SaveAll<DBOConfig>();
         }
 
         [TestMethod]

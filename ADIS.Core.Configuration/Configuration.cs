@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Common;
+using ADIS.Core.ComponentServices.Database;
 
 namespace ADIS.Core.Configuration
 {
@@ -15,7 +16,6 @@ namespace ADIS.Core.Configuration
         object instance;
         Type t;
         internal bool isDirty = false;
-        internal bool deleted = false;
         internal bool added = false;
         static Dictionary<Type, List<TypeHelper.PropertyAccessor>> configItems = new Dictionary<Type, List<TypeHelper.PropertyAccessor>>();
 
@@ -36,12 +36,17 @@ namespace ADIS.Core.Configuration
                 cmdString.Append(tableName);
                 cmdString.Append(" (");
                 var accessor = accessors[0];
+                if (accessor.ConfigurationProperty.Primary && (Guid)accessor.Get(instance) == Guid.Empty)
+                    accessor.Set(instance, Guid.NewGuid());
+
                 cmdString.Append('[');
                 cmdString.Append(accessor.ConfigurationProperty.Column);
                 cmdString.Append(']');
                 for (int x = 1; x < accessors.Count; x++)
                 {
                     accessor = accessors[x];
+                    if (accessor.ConfigurationProperty.Primary && (Guid)accessor.Get(instance) == Guid.Empty)
+                        accessor.Set(instance, Guid.NewGuid());
                     cmdString.Append(", ");
                     cmdString.Append('[');
                     cmdString.Append(accessor.ConfigurationProperty.Column);
@@ -137,7 +142,7 @@ namespace ADIS.Core.Configuration
             }
             this.instance = instance;
         }
-        public Configuration(Type t)
+        internal Configuration(Type t)
         {
             this.t = t;
             if (!configItems.ContainsKey(t))
@@ -154,6 +159,16 @@ namespace ADIS.Core.Configuration
                 }
             }
             instance = TypeHelper.GetConstructor(t)();
+        }
+
+        public void ReadData(DbRowReader reader, object[] data)
+        {
+            var accessors = configItems[t];
+            for (int x = 0; x < accessors.Count; x++)
+            {
+                accessors[x].Set(instance, data[x]);
+
+            }
         }
 
         public override bool TrySetMember(

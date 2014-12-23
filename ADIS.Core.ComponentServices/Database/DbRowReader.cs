@@ -4,16 +4,44 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ADIS.Core.ComponentServices.Database.Readers;
 
 namespace ADIS.Core.ComponentServices.Database
 {
     public class DbRowReader : RowReader
     {
         private readonly DbDataReader reader;
+        private static Dictionary<Type, ITypedReader> readers;
         public DbRowReader(DbDataReader reader)
         {
             this.reader = reader;
             this.Init();
+            if (readers == null)
+            {
+                readers = new Dictionary<Type, ITypedReader>();
+                readers.Add(typeof(Byte), new ByteReader());
+                readers.Add(typeof(Byte?), new NullableByteReader());
+                readers.Add(typeof(int), new Int32Reader());
+                readers.Add(typeof(int?), new NullableInt32Reader());
+                readers.Add(typeof(short), new Int16Reader());
+                readers.Add(typeof(short?), new NullableInt16Reader());
+                readers.Add(typeof(long), new Int64Reader());
+                readers.Add(typeof(long?), new NullableInt64Reader());
+                readers.Add(typeof(decimal), new DecimalReader());
+                readers.Add(typeof(decimal?), new NullableDecimalReader());
+                readers.Add(typeof(char), new CharReader());
+                readers.Add(typeof(char?), new NullableCharReader());
+                readers.Add(typeof(Guid), new GuidReader());
+                readers.Add(typeof(Guid?), new NullableGuidReader());
+                readers.Add(typeof(DateTime), new DateTimeReader());
+                readers.Add(typeof(DateTime?), new NullableDateTimeReader());
+                readers.Add(typeof(bool), new BooleanReader());
+                readers.Add(typeof(double), new DoubleReader());
+                readers.Add(typeof(double?), new NullableDoubleReader());
+                readers.Add(typeof(string), new StringReader());
+                readers.Add(typeof(Single), new SingleReader());
+                readers.Add(typeof(Single?), new NullableSingleReader());
+            }
         }
 
         protected override int FieldCount
@@ -33,8 +61,15 @@ namespace ADIS.Core.ComponentServices.Database
 
         protected override T GetValue<T>(int ordinal, object[] data)
         {
-            return (T)((object)data[ordinal].ToString());
+            //return (T)((object)data[ordinal].ToString());
+            return (T)readers[typeof(T)].Read(this, ordinal, data);
+            // return (T)this.executor.Convert(this.reader.GetValue(ordinal), typeof(T));
+        }
 
+        protected override object GetValue(Type t, int ordinal, object[] data)
+        {
+            //return (T)((object)data[ordinal].ToString());
+            return readers[t].Read(this, ordinal, data);
             // return (T)this.executor.Convert(this.reader.GetValue(ordinal), typeof(T));
         }
 

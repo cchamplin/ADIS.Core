@@ -91,6 +91,13 @@ namespace ADIS.Core.Configuration.Util
                     return hasDataType;
                 }
             }
+            public Type Type
+            {
+                get
+                {
+                    return type;
+                }
+            }
             public DbDataType DataType
             {
                 get

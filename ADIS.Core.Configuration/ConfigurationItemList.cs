@@ -22,9 +22,20 @@ namespace ADIS.Core.Configuration
        
         public void Add(dynamic item)
         {
-            dynamic newItem = Configuration.FromInstance(item);
-            ((ICollection<dynamic>)data).Add(newItem);
+            lock (locker)
+            {
+                if (item is Configuration)
+                {
+                    ((ICollection<dynamic>)data).Add(item);
+                }
+                else {
+                    dynamic newItem = Configuration.FromInstance(item);
+                    ((ICollection<dynamic>)data).Add(newItem);
+                }
+            }
         }
+
+
         public bool IsReadOnly
         {
             get
@@ -47,21 +58,30 @@ namespace ADIS.Core.Configuration
         }
         public void Insert(int index, dynamic item)
         {
-            dynamic newItem = Configuration.FromInstance(item);
-            data.Insert(index, newItem);
+            lock (locker)
+            {
+                dynamic newItem = Configuration.FromInstance(item);
+                data.Insert(index, newItem);
+            }
         }
         public void RemoveAt(int index)
         {
-            data[index].removed = true;
-            removals.Add(data[index].ID);
-            data.RemoveAt(index);
+            lock (locker)
+            {
+                data[index].removed = true;
+                removals.Add(data[index].ID);
+                data.RemoveAt(index);
+            }
         }
 
         public bool Remove(dynamic item)
         {
-            removals.Add(item.ID);
-            item.removed = true;
-            return data.Remove(item);
+            lock (locker)
+            {
+                removals.Add(item.ID);
+                item.removed = true;
+                return data.Remove(item);
+            }
         }
 
         public dynamic this[int index]
@@ -77,7 +97,10 @@ namespace ADIS.Core.Configuration
         }
         public void Clear()
         {
-            data.Clear();
+            lock (locker)
+            {
+                data.Clear();
+            }
         }
         public int Count
         {

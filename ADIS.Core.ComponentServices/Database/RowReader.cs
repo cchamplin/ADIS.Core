@@ -25,6 +25,7 @@ namespace ADIS.Core.ComponentServices.Database
         protected abstract Type GetFieldType(int ordinal);
         protected abstract bool IsDBNull(int ordinal, object[] data);
         protected abstract T GetValue<T>(int ordinal, object[] data);
+        protected abstract object GetValue(Type t, int ordinal, object[] data);
         protected abstract Byte GetByte(int ordinal, object[] data);
         protected abstract Char GetChar(int ordinal, object[] data);
         protected abstract DateTime GetDateTime(int ordinal, object[] data);
