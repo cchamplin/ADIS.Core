@@ -11,7 +11,6 @@ namespace ADIS.Core.Configuration
         protected string assembly;
         protected string type;
         protected string @interface;
-       
         public string Interface
         {
             get { return @interface; }
@@ -28,6 +27,7 @@ namespace ADIS.Core.Configuration
                 assembly = value;
             }
         }
+      
         public string Type
         {
             get

@@ -19,7 +19,7 @@ namespace ADIS.Core.Configuration
         protected FastSerialize.Serializer serializer;
         protected Task configurationSaveTask;
         protected ServiceContainer dataServices;
-
+        protected string configurationDirectory;
         protected class WrappedConfiguration
         {
             public dynamic item;
@@ -37,7 +37,16 @@ namespace ADIS.Core.Configuration
         {
             configurations = new Dictionary<Type, WrappedConfiguration>();
             configurationsList = new List<WrappedConfiguration>();
+
+            var codeBase = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
+            configurationDirectory = codeBase.Substring(6,codeBase.LastIndexOf(Path.DirectorySeparatorChar)-6) + Path.DirectorySeparatorChar +"config" + Path.DirectorySeparatorChar;
+
             serializer = new FastSerialize.Serializer(typeof(FastSerialize.JsonSerializerGeneric));
+
+            var textContainer = ComponentServices.ComponentServices.Register("Text");
+            textContainer.Register(typeof(FastSerialize.ISerializer), serializer);
+
+
             var services = BindAll<ServiceContainerConfigRecord>(true);
 
             foreach (var container in services)
@@ -49,8 +58,20 @@ namespace ADIS.Core.Configuration
                     try
                     {
                         var assembly = Assembly.Load(service.Assembly);
+                        Assembly ifaceAssembly = assembly;
+                        var ifaceName = service.Interface;
 
-                        var iface = assembly.GetTypes().Where(x => x.IsInterface && x.Name == service.Interface).FirstOrDefault();
+                        if (service.Interface.Contains("#"))
+                        {
+                            System.Diagnostics.Debug.WriteLine(ifaceName.Substring(0, ifaceName.IndexOf("#")));
+                            System.Diagnostics.Debug.WriteLine( ifaceName.Substring(ifaceName.IndexOf("#")+1));
+                            ifaceAssembly = Assembly.Load(ifaceName.Substring(0,ifaceName.IndexOf("#")));
+                            ifaceName = ifaceName.Substring(ifaceName.IndexOf("#")+1);
+
+                        }
+                       
+
+                        var iface = ifaceAssembly.GetTypes().Where(x => x.IsInterface && x.Name == ifaceName).FirstOrDefault();
 
                         if (iface == null)
                         {
@@ -391,7 +412,7 @@ namespace ADIS.Core.Configuration
         private IList<dynamic> BindAllFile<T>(ConfigurationEntity ce, bool ignoreMissing) where T : new()
         {
             string fileName = ce.Name + ".json";
-            if (!File.Exists(fileName))
+            if (!File.Exists(configurationDirectory + fileName))
             {
                 if (ignoreMissing)
                 {
@@ -401,7 +422,7 @@ namespace ADIS.Core.Configuration
                 throw new Exception("Unable to find configuration file: " + fileName);
             }
             List<T> data = null;
-            using (var fileReader = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var fileReader = new FileStream(configurationDirectory + fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 data = serializer.Deserialize<List<T>>(fileReader,false);
             }
