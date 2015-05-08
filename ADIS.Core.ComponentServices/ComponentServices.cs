@@ -14,7 +14,8 @@ namespace ADIS.Core.ComponentServices
         }
         public static ServiceContainer Fetch(string name)
         {
-
+            if (!containers.ContainsKey(name))
+                throw new Exception("No such container has been registered");
             return containers[name];
 
         }

@@ -47,6 +47,17 @@ namespace ADIS.Core.ComponentServices
             }
             throw new Exception("Service already registered");
         }
+        public void Unregister(Type @interface)
+        {
+            lock (services)
+            {
+                if (services.ContainsKey(@interface))
+                {
+                    services.Remove(@interface);
+                    return;
+                }
+            }
+        }
         public bool ServiceTypeRegistered(Type @interface)
         {
             return services.ContainsKey(@interface);
