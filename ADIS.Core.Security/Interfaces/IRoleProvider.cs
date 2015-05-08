@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ADIS.Core.Security
 {
-    public interface IUserType
+    public interface IRoleProvider
     {
-        string GetType();
+        IRoleBinding Binding { get; }
     }
 }

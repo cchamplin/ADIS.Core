@@ -13,6 +13,6 @@ namespace ADIS.Core.Security
         AccessType AccessType { get; set; }
         ISecurableType Type { get; set; }
         List<ISecurable> SubSecurables { get; }
-        ISecurable parent { get; }
+        ISecurable Parent { get; }
     }
 }

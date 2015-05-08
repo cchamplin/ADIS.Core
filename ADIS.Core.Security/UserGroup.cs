@@ -8,8 +8,12 @@ namespace ADIS.Core.Security
 {
     public class UserGroup
     {
-        protected Guid ID;
-        protected string machineName;
-        protected string name;
+        protected Guid id;
+        protected IUserGroupBinding binding;
+        protected bool enabled;
+
+        public Guid ID { get { return id; } }
+        public IUserGroupBinding Binding { get { return binding; } }
+        public bool Enabled { get { return enabled; } }
     }
 }

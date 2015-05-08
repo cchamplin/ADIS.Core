@@ -1,0 +1,24 @@
+﻿ISecurableType
+	- Used to identify type of object/data is being secured by an ISecurable
+	- Examples: DBO, DBOProperty, View, ViewField, Route
+
+ISecurable
+	- A wrapper for an object/data that can have security on it
+	- Securable: If the ISecurable can wrap a single object this can contain an instance
+		- Examples: DBOProperties
+	- SecruableID: Guid identifier of securable
+		- Examples: DBO PrimaryIdentifier
+	- Type: The ISecurableType associated with the securable
+	- AccessType: Bit field for access (read,write,delete,etc)
+	- SubSecurables: Sub Securable entities assocaited with this securable
+		- Examples: DBOs may have sub securables of DBOProperties
+	- Parent: The parent item if this is a sub securable
+
+IUserType
+	- Used to define user types
+	- Examples: Student, Staff
+
+Role
+	- A user associated role, roles may contain a set of security groups
+	- Examples: 
+IRoleBinding
