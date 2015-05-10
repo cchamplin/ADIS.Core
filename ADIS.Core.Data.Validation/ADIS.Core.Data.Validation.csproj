@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BEA5772E-E83A-4D25-9616-2BF1D71C14CC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ADIS.Core.Data.Validation</RootNamespace>
+    <AssemblyName>ADIS.Core.Data.Validation</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ChainedValidationRule.cs" />
+    <Compile Include="Configurators\Continuation.cs" />
+    <Compile Include="Configurators\Unless.cs" />
+    <Compile Include="Configurators\When.cs" />
+    <Compile Include="Configurators\WithMessage.cs" />
+    <Compile Include="ContinuationStyle.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="IChainedSingleValidationRule.cs" />
+    <Compile Include="IChainedValidationRule.cs" />
+    <Compile Include="IRuleChain.cs" />
+    <Compile Include="IValidationRule.cs" />
+    <Compile Include="IWrappedChainedValidationRule.cs" />
+    <Compile Include="NestedChainedValidator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RuleChain.cs" />
+    <Compile Include="ValidationContext.cs" />
+    <Compile Include="ValidationFailure.cs" />
+    <Compile Include="ValidationResult.cs" />
+    <Compile Include="ValidationRule.cs" />
+    <Compile Include="Validator.cs" />
+    <Compile Include="Validators\CreditCardValidator.cs" />
+    <Compile Include="Validators\EmailValidator.cs" />
+    <Compile Include="Validators\EmptyValidator.cs" />
+    <Compile Include="Validators\EqualsValidator.cs" />
+    <Compile Include="Validators\GreaterThanOrEqualsValidator.cs" />
+    <Compile Include="Validators\GreatThanValidator.cs" />
+    <Compile Include="Validators\IsNotNull.cs" />
+    <Compile Include="Validators\IsNull.cs" />
+    <Compile Include="Validators\LengthValidator.cs" />
+    <Compile Include="Validators\LessThanOrEqualsValidator.cs" />
+    <Compile Include="Validators\LessThanValidator.cs" />
+    <Compile Include="Validators\NotEmptyValidator.cs" />
+    <Compile Include="Validators\NotEqualsValidator.cs" />
+    <Compile Include="Validators\RegexValidator.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
