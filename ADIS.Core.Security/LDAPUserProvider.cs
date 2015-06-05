@@ -10,13 +10,14 @@ using ADIS.Core.Configuration;
 
 namespace ADIS.Core.Security
 {
-    public class SqlUserProvider : IUserProvider
+    public class LDAPUserProvider : IUserProvider
     {
         protected IUserBinding binding;
         protected string connectionString;
         protected IDatabaseProvider dbProvider;
         protected ISecurityProviders securityProviders;
-        public SqlUserProvider(IUserBinding binding) {
+        public LDAPUserProvider(IUserBinding binding)
+        {
             ISecurityProviders securityProviders = ComponentServices.ComponentServices.Fetch("Security").Resolve<ISecurityProviders>();
             this.securityProviders = securityProviders;
 
@@ -199,7 +200,7 @@ namespace ADIS.Core.Security
             throw new NotImplementedException();
         }
 
-        public void Register(User user, string password)
+        public void Register(User user, string password = null)
         {
              DbConnection dbConnection = null;
             if (dbProvider == null || dbConnection == null)
@@ -258,11 +259,9 @@ namespace ADIS.Core.Security
                         user.FirstLogin = null;
                         var salt = Crypto.CreateSalt();
                         user.PassSalt = Convert.ToBase64String(salt);
-                        var passHash = Crypto.CreateHash(password, salt);
-                        user.PassHash = passHash;
                         cmd.Parameters.Add(dbProvider.NewParameter("@identifier", user.UserID));
                         cmd.Parameters.Add(dbProvider.NewParameter("@username", user.LoginName));
-                        cmd.Parameters.Add(dbProvider.NewParameter("@password", passHash));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@password", ""));
                         cmd.Parameters.Add(dbProvider.NewParameter("@passwordSalt", salt));
                         cmd.Parameters.Add(dbProvider.NewParameter("@isAdministrator", user.IsAdministrator));
                         cmd.Parameters.Add(dbProvider.NewParameter("@userType", user.UserType.MachineName));
@@ -294,7 +293,5 @@ namespace ADIS.Core.Security
             }
                
         }
-
-
     }
 }

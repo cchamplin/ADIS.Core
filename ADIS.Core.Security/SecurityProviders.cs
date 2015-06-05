@@ -72,10 +72,6 @@ namespace ADIS.Core.Security
             {
                 throw new Exception("User provider binding cannot be null");
             }
-            if (provider.AuthenticationBinding == null)
-            {
-                throw new Exception("User provider authentication binding cannot be null");
-            }
             if (userProviders.ContainsKey(provider.Binding.MachineName))
             {
                 throw new Exception("User provider has already been registered");
@@ -167,14 +163,6 @@ namespace ADIS.Core.Security
             throw new NotImplementedException();
         }
 
-        public User AuthenticateUser(string username, string password)
-        {
-            throw new NotImplementedException();
-        }
-
-        public User AuthenticateUser(object[] requestFields)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

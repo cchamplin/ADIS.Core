@@ -8,14 +8,13 @@ namespace ADIS.Core.Security
 {
     public interface IUserProvider
     {
-        IAuthenticationBinding AuthenticationBinding { get; }
         IUserBinding Binding { get; }
         User GetByEmail(string emailAddress);
         User GetByUsername(string username);
         User GetByGuid(Guid identifier);
         User GetByToken(object token);
 
-        void Register(User user);
+        void Register(User user, string password = null);
 
         
     }

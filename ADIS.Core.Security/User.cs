@@ -13,6 +13,7 @@ namespace ADIS.Core.Security
         protected string loginname;
         protected string passSalt;
         protected string passHash;
+        protected string email;
 
         protected List<Role> roles;
         protected List<UserGroup> userGroups;
@@ -27,16 +28,17 @@ namespace ADIS.Core.Security
         protected Guid changeID;
         protected Guid addID;
 
-        protected DateTime lastLogin;
-        protected DateTime firstLogin;
+        protected DateTime? lastLogin;
+        protected DateTime? firstLogin;
         protected int numLogins;
 
         protected bool expires;
-        protected DateTime expiresDate;
+        protected DateTime? expiresDate;
 
         protected List<IAccessAvailability> accessAvailability;
 
-        protected IUserBinding bindingType;
+        protected IUserBinding userBindingType;
+        protected IAuthenticationBinding authenticationBindingType;
 
         protected Dictionary<string, IDataSetting> settings;
 
@@ -50,13 +52,13 @@ namespace ADIS.Core.Security
             get { return addedDate; }
             set { addedDate = value; }
         }
-        public DateTime LastLogin
+        public DateTime? LastLogin
         {
             get { return lastLogin; }
             set { lastLogin = value; }
         }
 
-        public DateTime FirstLogin
+        public DateTime? FirstLogin
         {
             get { return firstLogin; }
             set { firstLogin = value; }
@@ -74,7 +76,7 @@ namespace ADIS.Core.Security
             set { expires = value; }
         }
 
-        public DateTime ExpiresDate
+        public DateTime? ExpiresDate
         {
             get { return expiresDate; }
             set { expiresDate = value; }
@@ -96,10 +98,29 @@ namespace ADIS.Core.Security
             set { passHash = value; }
         }
 
+
+
+        public bool ComparePassword(string password)
+        {
+            return Crypto.ValidatePassword(password, this.passSalt, this.passHash);
+        }
+
         public bool IsAdministrator
         {
             get { return isAdministrator; }
             set { isAdministrator = value; }
+        }
+
+        public string Email
+        {
+            get
+            {
+                return email;
+            }
+            set
+            {
+                email = value;
+            }
         }
 
         public IUserType UserType
@@ -127,6 +148,28 @@ namespace ADIS.Core.Security
             set { AddedID = value; }
         }
 
+        internal IUserBinding UserBinding
+        {
+            get
+            {
+                return userBindingType;
+            }
+            set
+            {
+                this.userBindingType = value;
+            }
+        }
+        internal IAuthenticationBinding AuthenticationBinding
+        {
+            get
+            {
+                return authenticationBindingType;
+            }
+            set
+            {
+                this.authenticationBindingType = value;
+            }
+        }
 
         public List<Role> Roles
         {

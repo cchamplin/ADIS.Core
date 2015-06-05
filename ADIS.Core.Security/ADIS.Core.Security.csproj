@@ -40,7 +40,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessType.cs" />
-    <Compile Include="AuthenticationRequestField.cs" />
+    <Compile Include="Bindings\LDAPAuthenticationBinding.cs" />
+    <Compile Include="Bindings\LDAPUserBinding.cs" />
+    <Compile Include="Bindings\SqlAuthenticationBinding.cs" />
+    <Compile Include="Bindings\SqlUserBinding.cs" />
+    <Compile Include="Configuration\UserProviderConfig.cs" />
+    <Compile Include="LDAPUserProvider.cs" />
+    <Compile Include="Crypto.cs" />
     <Compile Include="Interfaces\IAccessAvailability.cs" />
     <Compile Include="AccessAvailabilityType.cs" />
     <Compile Include="Interfaces\IAuthenticationBinding.cs" />

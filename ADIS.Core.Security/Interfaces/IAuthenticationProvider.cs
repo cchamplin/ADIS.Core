@@ -9,8 +9,8 @@ namespace ADIS.Core.Security
     public interface IAuthenticationProvider
     {
         IAuthenticationBinding Binding { get; }
-        object AuthenticateUser(User user, string password);
-        object AuthenticateUser(User user, object[] requestFields);
-        List<AuthenticationRequestField> ValidRequestFields();
+        object AuthenticateUser(User user, object authenticationRequest);
+        User GetUser(object authenticationRequest);
+        Type AuthenticationRequestType { get; }
     }
 }

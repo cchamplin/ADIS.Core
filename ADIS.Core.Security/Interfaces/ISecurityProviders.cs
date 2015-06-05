@@ -12,11 +12,13 @@ namespace ADIS.Core.Security
         void RegisterRoleProvider(IRoleProvider provider);
         void RegisterAuthenticationProvider(IAuthenticationProvider provider);
         void RegisterUserGroupProvider(IUserGroupProvider provider);
+        void RegisterUserProvider(IUserProvider provider);
 
         IRoleBinding GetRoleProvider(string bindingMachineName);
         ISecurityGroupBinding GetSecurityGroupProvider(string bindingMachineName);
         IAuthenticationBinding GetAuthenticationProvider(string bindingMachineName);
         IUserGroupProvider GetUserGroupProvider(string bindingMachineName);
+        IUserProvider GetUserProvider(string bindingMachineName);
 
         List<Role> GetActiveRoles();
         List<Role> GetAllRoles();
@@ -29,9 +31,6 @@ namespace ADIS.Core.Security
         List<UserGroup> GetActiveUserGroups();
         List<UserGroup> GetAllUserGroups();
         List<UserGroup> GetInactiveUserGroups();
-
-        User AuthenticateUser(string username, string password);
-        User AuthenticateUser(object[] requestFields);
         
        
     }

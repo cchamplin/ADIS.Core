@@ -10,5 +10,6 @@ namespace ADIS.Core.Security
     {
         string MachineName { get; }
         string Name { get; }
+        string EndPoint { get; }
     }
 }
