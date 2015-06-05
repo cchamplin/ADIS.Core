@@ -11,6 +11,7 @@ namespace ADIS.Core.ComponentServices.Services
         string Method { get; }
         string Authorization { get; }
         string RawUrl { get; }
+        Uri Url { get; }
         bool IsSecure { get; }
         string RemoteIP { get; }
         Dictionary<string, System.Net.Cookie> Cookies { get; }

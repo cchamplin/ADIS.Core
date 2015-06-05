@@ -9,5 +9,6 @@ namespace ADIS.Core.ComponentServices.Services
     public interface IRoute
     {
         string Route { get; }
+        Dictionary<string,string> GetComponents(Uri uri);
     }
 }

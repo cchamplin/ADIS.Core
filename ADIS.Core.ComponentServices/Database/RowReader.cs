@@ -41,6 +41,7 @@ namespace ADIS.Core.ComponentServices.Database
         protected abstract Int64 GetInt64(int ordinal, object[] data);
         protected abstract String GetString(int ordinal, object[] data);
 
+
         public T ReadValue<T>(int ordinal, object[] data)
         {
             if (this.IsDBNull(ordinal, data))

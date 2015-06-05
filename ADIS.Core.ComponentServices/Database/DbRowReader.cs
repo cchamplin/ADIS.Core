@@ -59,6 +59,8 @@ namespace ADIS.Core.ComponentServices.Database
             return data[ordinal] is DBNull;//this.reader.IsDBNull(ordinal);
         }
 
+
+
         protected override T GetValue<T>(int ordinal, object[] data)
         {
             //return (T)((object)data[ordinal].ToString());
@@ -72,6 +74,7 @@ namespace ADIS.Core.ComponentServices.Database
             return readers[t].Read(this, ordinal, data);
             // return (T)this.executor.Convert(this.reader.GetValue(ordinal), typeof(T));
         }
+                
 
         protected override Byte GetByte(int ordinal, object[] data)
         {
