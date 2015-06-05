@@ -105,5 +105,76 @@ namespace ADIS.Core.Security
         {
             return userProviders[bindingMachineName];
         }
+
+
+        IRoleBinding ISecurityProviders.GetRoleProvider(string bindingMachineName)
+        {
+            throw new NotImplementedException();
+        }
+
+        ISecurityGroupBinding ISecurityProviders.GetSecurityGroupProvider(string bindingMachineName)
+        {
+            throw new NotImplementedException();
+        }
+
+        IAuthenticationBinding ISecurityProviders.GetAuthenticationProvider(string bindingMachineName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Role> GetActiveRoles()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Role> GetAllRoles()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Role> GetInactiveRoles()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<SecurityGroup> GetActiveSecurityGroups()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<SecurityGroup> GetAllSecurityGroups()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<SecurityGroup> GetInactiveSecurityGroups()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UserGroup> GetActiveUserGroups()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UserGroup> GetAllUserGroups()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UserGroup> GetInactiveUserGroups()
+        {
+            throw new NotImplementedException();
+        }
+
+        public User AuthenticateUser(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User AuthenticateUser(object[] requestFields)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

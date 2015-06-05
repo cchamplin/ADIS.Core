@@ -64,7 +64,9 @@
     <Compile Include="Role.cs" />
     <Compile Include="SecurityProviders.cs" />
     <Compile Include="SecurityGroup.cs" />
+    <Compile Include="Services\AuthenticationServiceHandler.cs" />
     <Compile Include="Services\SecurityServices.cs" />
+    <Compile Include="Services\UserServiceHandler.cs" />
     <Compile Include="SqlUserProvider.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
