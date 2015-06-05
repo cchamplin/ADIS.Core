@@ -60,7 +60,7 @@ namespace ADIS.Core.Configuration
                         var assembly = Assembly.Load(service.Assembly);
                         Assembly ifaceAssembly = assembly;
                         var ifaceName = service.Interface;
-
+                        System.Diagnostics.Debug.WriteLine(service.Interface);
                         if (service.Interface.Contains("#"))
                         {
                             System.Diagnostics.Debug.WriteLine(ifaceName.Substring(0, ifaceName.IndexOf("#")));
@@ -90,7 +90,7 @@ namespace ADIS.Core.Configuration
                     }
                     catch (Exception ex)
                     {
-                        System.Diagnostics.Debug.WriteLine("Failed to load service: " + service.Interface + "," + service.Assembly);
+                        System.Diagnostics.Debug.WriteLine("Failed to load service: " + service.Interface + "," + service.Assembly + " Exception: " + ex.Message + " " + ex.StackTrace);
                     }
                 }
                 
@@ -149,6 +149,7 @@ namespace ADIS.Core.Configuration
             }
             else if (config.configEntity.Type == ConfigurationEntityType.DataBound)
             {
+                bool connectionCreated = false;
                 if (dbProvider == null || dbConnection == null)
                 {
                     
@@ -161,7 +162,7 @@ namespace ADIS.Core.Configuration
                         {
                             dbConnection = dbProvider.NewConnection(connectionString);
                             dbConnection.Open();
-
+                            connectionCreated = true;
                         }
                     }
                 }
@@ -241,6 +242,10 @@ namespace ADIS.Core.Configuration
 
                             }
                         }
+                        if (connectionCreated && dbConnection.State == System.Data.ConnectionState.Open)
+                        {
+                            dbConnection.Close();
+                        }
                     }
 
                 }
@@ -249,24 +254,31 @@ namespace ADIS.Core.Configuration
 
         private void SaveAll() {
 
-            
-            IDatabaseProvider dbProvider = null;
-            DbConnection dbConnection = null;
-            if (dataServices != null)
+            try
             {
-                dbProvider = dataServices.Resolve<IDatabaseProvider>();
-                var strings = BindAll<ConnectionStringConfigRecord>();
-                var connectionString = strings.Where(x => x.Name == "Default").First().ConnectionString;
-                if (dbProvider != null)
+                IDatabaseProvider dbProvider = null;
+                DbConnection dbConnection = null;
+                if (dataServices != null)
                 {
-                    dbConnection = dbProvider.NewConnection(connectionString);
-                    dbConnection.Open();
+                    dbProvider = dataServices.Resolve<IDatabaseProvider>();
+                    var strings = BindAll<ConnectionStringConfigRecord>();
+                    var connectionString = strings.Where(x => x.Name == "Default").First().ConnectionString;
+                    if (dbProvider != null)
+                    {
+                        dbConnection = dbProvider.NewConnection(connectionString);
+                        dbConnection.Open();
 
+                    }
                 }
+                foreach (WrappedConfiguration item in configurationsList)
+                {
+                    SaveConfiguration(item, dbProvider, dbConnection);
+                }
+                dbConnection.Close();
             }
-            foreach (WrappedConfiguration item in configurationsList)
+            catch (Exception ex)
             {
-                SaveConfiguration(item,dbProvider,dbConnection);
+                System.Diagnostics.Debug.WriteLine("Exception occured saving datasets");
             }
         }
         public static ConfigurationManager Current
@@ -422,6 +434,7 @@ namespace ADIS.Core.Configuration
                 throw new Exception("Unable to find configuration file: " + fileName);
             }
             List<T> data = null;
+            System.Diagnostics.Debug.WriteLine("Reading file: " + configurationDirectory + fileName);
             using (var fileReader = new FileStream(configurationDirectory + fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 data = serializer.Deserialize<List<T>>(fileReader,false);
