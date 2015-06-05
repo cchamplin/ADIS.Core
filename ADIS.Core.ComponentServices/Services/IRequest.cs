@@ -14,6 +14,9 @@ namespace ADIS.Core.ComponentServices.Services
         bool IsSecure { get; }
         string RemoteIP { get; }
         Dictionary<string, System.Net.Cookie> Cookies { get; }
-        Dictionary<string, object> Items { get; }
+        Dictionary<string, IPostedFile> Files { get; }
+        Dictionary<string, string> QueryParameters { get; }
+        Dictionary<string, string> Form { get; }
+        //Dictionary<string, object> Items { get; }
     }
 }
