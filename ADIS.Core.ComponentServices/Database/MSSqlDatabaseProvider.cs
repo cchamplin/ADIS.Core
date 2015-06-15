@@ -36,10 +36,25 @@ namespace ADIS.Core.ComponentServices
         {
             return new SqlParameter();
         }
+        public System.Data.Common.DbParameter NewParameter(string name, int value)
+        {
+            return new SqlParameter(name, value);
+        }
 
         public System.Data.Common.DbParameter NewParameter(string name, object value)
         {
+            if (value == null)
+                value = DBNull.Value;
             return new SqlParameter(name, value);
+        }
+        public System.Data.Common.DbParameter NewParameter(string name, object value, DbDataType type)
+        {
+            SqlDbType sqlType = GenericToSql(type);
+            var param = new SqlParameter(name, sqlType);
+            if (value == null)
+                value = DBNull.Value;
+            param.Value = value;
+            return param;
         }
 
         public System.Data.Common.DbParameter NewParameter(string name, DbDataType type)

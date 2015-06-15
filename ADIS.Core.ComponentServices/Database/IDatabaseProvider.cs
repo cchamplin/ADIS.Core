@@ -15,7 +15,9 @@ namespace ADIS.Core.ComponentServices
         DbCommand NewCommand(DbConnection connection);
         DbParameter NewParameter();
         DbParameter NewParameter(string name, object value);
+        DbParameter NewParameter(string name, int value);
         DbParameter NewParameter(string name, DbDataType type);
+        DbParameter NewParameter(string name, object value, DbDataType type);
         DbParameter NewParameter(string name, DbDataType type, int size);
     }
 }
