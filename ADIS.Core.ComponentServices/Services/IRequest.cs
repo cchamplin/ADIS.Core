@@ -18,6 +18,7 @@ namespace ADIS.Core.ComponentServices.Services
         Dictionary<string, IPostedFile> Files { get; }
         Dictionary<string, string> QueryParameters { get; }
         Dictionary<string, string> Form { get; }
+        string Data { get; }
         //Dictionary<string, object> Items { get; }
     }
 }
