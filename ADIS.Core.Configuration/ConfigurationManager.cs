@@ -20,6 +20,7 @@ namespace ADIS.Core.Configuration
         protected Task configurationSaveTask;
         protected ServiceContainer dataServices;
         protected string configurationDirectory;
+        protected string connectionString;
         protected class WrappedConfiguration
         {
             public dynamic item;
@@ -46,6 +47,8 @@ namespace ADIS.Core.Configuration
             var textContainer = ComponentServices.ComponentServices.Register("Text");
             textContainer.Register(typeof(FastSerialize.ISerializer), serializer);
 
+            var strings = BindAll<ConnectionStringConfigRecord>();
+            connectionString = strings.Where(x => x.Name == "Default").First().ConnectionString;
 
             var services = BindAll<ServiceContainerConfigRecord>(true);
 
@@ -156,8 +159,7 @@ namespace ADIS.Core.Configuration
                     if (dataServices != null)
                     {
                         dbProvider = dataServices.Resolve<IDatabaseProvider>();
-                        var strings = BindAll<ConnectionStringConfigRecord>();
-                        var connectionString = strings.Where(x => x.Name == "Default").First().ConnectionString;
+                      
                         if (dbProvider != null)
                         {
                             dbConnection = dbProvider.NewConnection(connectionString);
@@ -261,8 +263,7 @@ namespace ADIS.Core.Configuration
                 if (dataServices != null)
                 {
                     dbProvider = dataServices.Resolve<IDatabaseProvider>();
-                    var strings = BindAll<ConnectionStringConfigRecord>();
-                    var connectionString = strings.Where(x => x.Name == "Default").First().ConnectionString;
+                    
                     if (dbProvider != null)
                     {
                         dbConnection = dbProvider.NewConnection(connectionString);
