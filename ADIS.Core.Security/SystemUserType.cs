@@ -6,22 +6,16 @@ using System.Threading.Tasks;
 
 namespace ADIS.Core.Security
 {
-    public class SqlAuthenticationBinding : IAuthenticationBinding
+    public class SystemUserType : IUserType
     {
         public string MachineName
         {
-            get { return "SQL_AUTHENTICATION_BINDING"; }
+            get { return "SYSTEM"; }
         }
 
         public string Name
         {
-            get { return "SQL Authentication"; }
-        }
-
-
-        public string EndPoint
-        {
-            get { return "sql"; }
+            get { return "SYSTEM"; }
         }
     }
 }

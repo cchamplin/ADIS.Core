@@ -21,7 +21,7 @@ namespace ADIS.Core.Security
 
         public string EndPoint
         {
-            get { return "/ldap"; }
+            get { return "ldap"; }
         }
     }
 }

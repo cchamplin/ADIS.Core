@@ -18,6 +18,7 @@ namespace ADIS.Core.Security
         protected ISecurityProviders securityProviders;
         public LDAPUserProvider(IUserBinding binding)
         {
+            this.binding = binding;
             ISecurityProviders securityProviders = ComponentServices.ComponentServices.Fetch("Security").Resolve<ISecurityProviders>();
             this.securityProviders = securityProviders;
 
@@ -58,7 +59,7 @@ namespace ADIS.Core.Security
                 UserGroups = new List<UserGroup>(),
                 UserID = reader.ReadGuid(dr.GetOrdinal("USER_GU"), data),
                 UserType = null,
-                AuthenticationBinding = securityProviders.GetAuthenticationProvider(reader.ReadString(dr.GetOrdinal("AUTHENTICATION_BINDING_TYPE"),data))
+                AuthenticationBinding = securityProviders.GetAuthenticationProvider(reader.ReadString(dr.GetOrdinal("AUTHENTICATION_BINDING_TYPE"),data)).Binding
             };
             return user;
         }

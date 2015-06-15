@@ -14,9 +14,9 @@ namespace ADIS.Core.Security
         void RegisterUserGroupProvider(IUserGroupProvider provider);
         void RegisterUserProvider(IUserProvider provider);
 
-        IRoleBinding GetRoleProvider(string bindingMachineName);
-        ISecurityGroupBinding GetSecurityGroupProvider(string bindingMachineName);
-        IAuthenticationBinding GetAuthenticationProvider(string bindingMachineName);
+        IRoleProvider GetRoleProvider(string bindingMachineName);
+        ISecurityGroupProvider GetSecurityGroupProvider(string bindingMachineName);
+        IAuthenticationProvider GetAuthenticationProvider(string bindingMachineName);
         IUserGroupProvider GetUserGroupProvider(string bindingMachineName);
         IUserProvider GetUserProvider(string bindingMachineName);
 

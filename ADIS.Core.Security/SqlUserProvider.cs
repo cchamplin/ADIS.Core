@@ -17,6 +17,7 @@ namespace ADIS.Core.Security
         protected IDatabaseProvider dbProvider;
         protected ISecurityProviders securityProviders;
         public SqlUserProvider(IUserBinding binding) {
+            this.binding = binding;
             ISecurityProviders securityProviders = ComponentServices.ComponentServices.Fetch("Security").Resolve<ISecurityProviders>();
             this.securityProviders = securityProviders;
 
@@ -57,7 +58,7 @@ namespace ADIS.Core.Security
                 UserGroups = new List<UserGroup>(),
                 UserID = reader.ReadGuid(dr.GetOrdinal("USER_GU"), data),
                 UserType = null,
-                AuthenticationBinding = securityProviders.GetAuthenticationProvider(reader.ReadString(dr.GetOrdinal("AUTHENTICATION_BINDING_TYPE"),data))
+                AuthenticationBinding = securityProviders.GetAuthenticationProvider(reader.ReadString(dr.GetOrdinal("AUTHENTICATION_BINDING_TYPE"),data)).Binding
             };
             return user;
         }
@@ -84,7 +85,7 @@ namespace ADIS.Core.Security
                 if (dbConnection.State == System.Data.ConnectionState.Open)
                 {
                     StringBuilder sb = new StringBuilder();
-                    sb.Append("SELECT * FROM [adis].[ADIS_USER] WHERE email=@email AND USER_BINDING_TYPE=@bindingMachineName;");
+                    sb.Append("SELECT * FROM [adis].[ADIS_USER] WHERE [email]=@email AND [USER_BINDING_TYPE]=@bindingMachineName;");
                     DbCommand cmd = dbConnection.CreateCommand();
                     cmd.Connection = dbConnection;
                     System.Diagnostics.Debug.WriteLine("Running SQL : " + sb.ToString());
@@ -94,12 +95,14 @@ namespace ADIS.Core.Security
                     var reader = cmd.ExecuteReader();
                     List<User> users = new List<User>();
                     var rowReader = new DbRowReader(reader);
-                    reader.Read();
-                    var user = GetUser(reader,rowReader);
-                    
-                    return user;
-
-
+                    if (reader.HasRows)
+                    {
+                        reader.Read();
+                        var user = GetUser(reader, rowReader);
+                        reader.Close();
+                        return user;
+                    }
+                    reader.Close();
                 }
                 return null;
             }
@@ -128,7 +131,7 @@ namespace ADIS.Core.Security
                 if (dbConnection.State == System.Data.ConnectionState.Open)
                 {
                     StringBuilder sb = new StringBuilder();
-                    sb.Append("SELECT * FROM [adis].[ADIS_USER] WHERE LOGIN_NAME=@username AND USER_BINDING_TYPE=@bindingMachineName;");
+                    sb.Append("SELECT * FROM [adis].[ADIS_USER] WHERE [LOGIN_NAME]=@username AND [USER_BINDING_TYPE]=@bindingMachineName;");
                     DbCommand cmd = dbConnection.CreateCommand();
                     cmd.Connection = dbConnection;
                     System.Diagnostics.Debug.WriteLine("Running SQL : " + sb.ToString());
@@ -138,11 +141,15 @@ namespace ADIS.Core.Security
                     var reader = cmd.ExecuteReader();
                     List<User> users = new List<User>();
                     var rowReader = new DbRowReader(reader);
-                    reader.Read();
-                    var user = GetUser(reader, rowReader);
-
-                    return user;
-
+                    if (reader.HasRows)
+                    {
+                        reader.Read();
+                        var user = GetUser(reader, rowReader);
+                        reader.Close();
+                        return user;
+                    }
+                    reader.Close();
+                    return null;
 
                 }
                 return null;
@@ -172,7 +179,7 @@ namespace ADIS.Core.Security
                 if (dbConnection.State == System.Data.ConnectionState.Open)
                 {
                     StringBuilder sb = new StringBuilder();
-                    sb.Append("SELECT * FROM [adis].[ADIS_USER] WHERE USER_GU=@identifier AND USER_BINDING_TYPE=@bindingMachineName;");
+                    sb.Append("SELECT * FROM [adis].[ADIS_USER] WHERE [USER_GU]=@identifier AND [USER_BINDING_TYPE]=@bindingMachineName;");
                     DbCommand cmd = dbConnection.CreateCommand();
                     cmd.Connection = dbConnection;
                     System.Diagnostics.Debug.WriteLine("Running SQL : " + sb.ToString());
@@ -182,11 +189,14 @@ namespace ADIS.Core.Security
                     var reader = cmd.ExecuteReader();
                     List<User> users = new List<User>();
                     var rowReader = new DbRowReader(reader);
-                    reader.Read();
-                    var user = GetUser(reader, rowReader);
-
-                    return user;
-
+                    if (reader.HasRows)
+                    {
+                        reader.Read();
+                        var user = GetUser(reader, rowReader);
+                        reader.Close();
+                        return user;
+                    }
+                    reader.Close();
 
                 }
                 return null;
@@ -201,6 +211,23 @@ namespace ADIS.Core.Security
 
         public void Register(User user, string password)
         {
+            if (user.UserID == Guid.Empty)
+            {
+                user.UserID = Guid.NewGuid();
+            }
+            if (user.UserType == null)
+                throw new Exception("User type cannot be null");
+            
+            if (user.UserBinding == null)
+            {
+                user.UserBinding = this.binding;
+                //throw new Exception("User binding cannot be null");
+            }
+            if (user.AuthenticationBinding == null)
+            {
+                user.AuthenticationBinding = new SqlAuthenticationBinding();
+               // throw new Exception("Authentication binding cannot be null");
+            }
              DbConnection dbConnection = null;
             if (dbProvider == null || dbConnection == null)
             {
@@ -221,7 +248,7 @@ namespace ADIS.Core.Security
                 if (dbConnection.State == System.Data.ConnectionState.Open)
                 {
                     StringBuilder sb = new StringBuilder();
-                    sb.Append("SELECT * FROM [adis].[ADIS_USER] WHERE (USER_GU=@identifier OR EMAIL=@email OR LOGIN_NAME=@username);");
+                    sb.Append("SELECT * FROM [adis].[ADIS_USER] WHERE ([USER_GU]=@identifier OR [EMAIL]=@email OR [LOGIN_NAME]=@username);");
                     DbCommand cmd = dbConnection.CreateCommand();
                     cmd.Connection = dbConnection;
                     System.Diagnostics.Debug.WriteLine("Running SQL : " + sb.ToString());
@@ -236,37 +263,58 @@ namespace ADIS.Core.Security
                     {
                         throw new Exception("That user already exists in the data set. Identifier, email, and login name must be unqiue.");
                     }
-
+                    reader.Close();
                     var trans = dbConnection.BeginTransaction(System.Data.IsolationLevel.Serializable);
                     try
                     {
                         sb.Clear();
                         sb.Append("INSERT INTO [adis].[ADIS_USER]");
-                        sb.Append("(USER_GU,LOGIN_NAME,PASSWORD,PASSWORD_SALT,IS_ADMINISTRATOR,USER_TYPE");
-                        sb.Append(",CHANGE_DATE,ADDED_DATE,ADDED_GU,CHANGED_GU,LAST_LOGIN,FIRST_LOGIN,EXPIRES");
-                        sb.Append(",EXPIRES_DATE,NUM_LOGINS,USER_BINDING_TYPE,AUTHENTICATION_BINDING_TYPE,EMAIL)");
+                        sb.Append(" ([USER_GU],[LOGIN_NAME],[PASSWORD],[PASSWORD_SALT],[IS_ADMINISTRATOR],[USER_TYPE]");
+                        sb.Append(",[CHANGE_DATE],[ADDED_DATE],[ADDED_GU],[CHANGE_GU],[LAST_LOGIN],[FIRST_LOGIN],[EXPIRES]");
+                        sb.Append(",[EXPIRES_DATE],[NUM_LOGINS],[USER_BINDING_TYPE],[AUTHENTICATION_BINDING_TYPE],[EMAIL])");
                         sb.Append(" VALUES (");
                         sb.Append("@identifier,@username,@password,@passwordSalt,@isAdministrator,@userType");
                         sb.Append(",@changeDate,@addedDate,@addedGu,@changeGu,@lastLogin,@firstLogin,@expires");
-                        sb.Append(",@expiresDate,@numLogins,@userBindingType,@authenticationBindingType,@email");
-                        System.Diagnostics.Debug.WriteLine("Running SQL : " + cmd.ToString());
-                        var command = dbProvider.NewCommand(cmd.ToString(), dbConnection);
+                        sb.Append(",@expiresDate,@numLogins,@userBindingType,@authenticationBindingType,@email)");
+                        System.Diagnostics.Debug.WriteLine("Running SQL : " + sb.ToString());
+                        cmd = dbProvider.NewCommand(sb.ToString(), dbConnection);
+
                         user.ChangedDate = DateTime.Now;
                         user.AddedDate = DateTime.Now;
                         user.NumLogins = 0;
                         user.LastLogin = null;
                         user.FirstLogin = null;
-                        var salt = Crypto.CreateSalt();
-                        user.PassSalt = Convert.ToBase64String(salt);
+                        var salt = Convert.ToBase64String(Crypto.CreateSalt());
+                        user.PassSalt = salt;
                         var passHash = Crypto.CreateHash(password, salt);
                         user.PassHash = passHash;
-                        cmd.Parameters.Add(dbProvider.NewParameter("@identifier", user.UserID));
+                        /*
+                        cmd.Parameters.Add(dbProvider.NewParameter("@identifier", user.UserID, DbDataType.GUID));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@username", user.LoginName,DbDataType.VARCHAR));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@password", passHash, DbDataType.VARCHAR));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@passwordSalt", salt, DbDataType.VARCHAR));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@isAdministrator", user.IsAdministrator,DbDataType.BOOL));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@userType", user.UserType.MachineName,DbDataType.VARCHAR));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@changeDate", user.ChangedDate,DbDataType.DATETIME));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@addedDate", user.AddedDate, DbDataType.DATETIME));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@addedGu", user.AddedID,DbDataType.GUID));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@changeGu", user.ChangeID,DbDataType.GUID));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@lastLogin", user.LastLogin, DbDataType.DATETIME));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@firstLogin", user.FirstLogin, DbDataType.DATETIME));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@expires", user.Expires,DbDataType.BOOL));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@expiresDate", user.ExpiresDate, DbDataType.DATETIME));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@numLogins", 0,DbDataType.INT));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@userBindingType", user.UserBinding.MachineName,DbDataType.VARCHAR));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@authenticationBindingType", user.AuthenticationBinding.MachineName,DbDataType.VARCHAR));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@email", user.Email, DbDataType.VARCHAR));*/
+
+                       cmd.Parameters.Add(dbProvider.NewParameter("@identifier", user.UserID));
                         cmd.Parameters.Add(dbProvider.NewParameter("@username", user.LoginName));
                         cmd.Parameters.Add(dbProvider.NewParameter("@password", passHash));
                         cmd.Parameters.Add(dbProvider.NewParameter("@passwordSalt", salt));
                         cmd.Parameters.Add(dbProvider.NewParameter("@isAdministrator", user.IsAdministrator));
                         cmd.Parameters.Add(dbProvider.NewParameter("@userType", user.UserType.MachineName));
-                        cmd.Parameters.Add(dbProvider.NewParameter("@changeDate", user.ChangeID));
+                        cmd.Parameters.Add(dbProvider.NewParameter("@changeDate", user.ChangedDate));
                         cmd.Parameters.Add(dbProvider.NewParameter("@addedDate", user.AddedDate));
                         cmd.Parameters.Add(dbProvider.NewParameter("@addedGu", user.AddedID));
                         cmd.Parameters.Add(dbProvider.NewParameter("@changeGu", user.ChangeID));
@@ -278,15 +326,17 @@ namespace ADIS.Core.Security
                         cmd.Parameters.Add(dbProvider.NewParameter("@userBindingType", user.UserBinding.MachineName));
                         cmd.Parameters.Add(dbProvider.NewParameter("@authenticationBindingType", user.AuthenticationBinding.MachineName));
                         cmd.Parameters.Add(dbProvider.NewParameter("@email", user.Email));
-                        command.Transaction = trans;
 
-                        command.ExecuteNonQuery();
+                        cmd.Transaction = trans;
 
-                        trans.Commit();
+                        cmd.ExecuteNonQuery();
+
+                      trans.Commit();
                     }
                     catch (Exception ex)
                     {
                         trans.Rollback();
+                        throw new Exception("Failed to create user");
                     }
 
 

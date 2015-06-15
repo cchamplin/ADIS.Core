@@ -7,8 +7,8 @@ using ADIS.Core.Configuration;
 
 namespace ADIS.Core.Security
 {
-    [ConfigurationEntity(ConfigurationEntityType.FileBound, "UserProviders")]
-    public class UserProviderConfig
+    [ConfigurationEntity(ConfigurationEntityType.FileBound, "AuthenticationProviders")]
+    public class AuthenticationProviderConfig
     {
         [ConfigurationProperty("MachineName")]
         public string MachineName

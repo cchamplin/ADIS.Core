@@ -8,6 +8,16 @@ namespace ADIS.Core.Security
 {
     public class SecurityProviders : ISecurityProviders
     {
+
+        public SecurityProviders()
+        {
+            securityGroupProviders = new Dictionary<string, ISecurityGroupProvider>();
+            roleProviders = new Dictionary<string, IRoleProvider>();
+            userGroupProviders = new Dictionary<string, IUserGroupProvider>();
+            authenticationProviders = new Dictionary<string, IAuthenticationProvider>();
+            userProviders = new Dictionary<string, IUserProvider>();
+        }
+
         protected Dictionary<string, ISecurityGroupProvider> securityGroupProviders;
         protected Dictionary<string, IRoleProvider> roleProviders;
         protected Dictionary<string, IAuthenticationProvider> authenticationProviders;
@@ -81,42 +91,39 @@ namespace ADIS.Core.Security
 
         public IRoleProvider GetRoleProvider(string bindingMachineName)
         {
+            if (!roleProviders.ContainsKey(bindingMachineName))
+                throw new Exception("No such role provider has been registered");
             return roleProviders[bindingMachineName];
         }
 
         public ISecurityGroupProvider GetSecurityGroupProvider(string bindingMachineName)
         {
+            if (!securityGroupProviders.ContainsKey(bindingMachineName))
+                throw new Exception("No such security group has been registered");
             return securityGroupProviders[bindingMachineName];
         }
 
         public IAuthenticationProvider GetAuthenticationProvider(string bindingMachineName)
         {
+            if (!authenticationProviders.ContainsKey(bindingMachineName))
+                throw new Exception("No such authentication provider has been registered");
             return authenticationProviders[bindingMachineName];
         }
         public IUserGroupProvider GetUserGroupProvider(string bindingMachineName)
         {
+            if (!userGroupProviders.ContainsKey(bindingMachineName))
+                throw new Exception("No such user group provider has been registered");
             return userGroupProviders[bindingMachineName];
         }
         public IUserProvider GetUserProvider(string bindingMachineName)
         {
+            if (!userProviders.ContainsKey(bindingMachineName))
+                throw new Exception("No such user provider has been registered");
             return userProviders[bindingMachineName];
         }
 
 
-        IRoleBinding ISecurityProviders.GetRoleProvider(string bindingMachineName)
-        {
-            throw new NotImplementedException();
-        }
-
-        ISecurityGroupBinding ISecurityProviders.GetSecurityGroupProvider(string bindingMachineName)
-        {
-            throw new NotImplementedException();
-        }
-
-        IAuthenticationBinding ISecurityProviders.GetAuthenticationProvider(string bindingMachineName)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public List<Role> GetActiveRoles()
         {

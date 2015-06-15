@@ -10,7 +10,7 @@ namespace ADIS.Core.Security
     {
         IAuthenticationBinding Binding { get; }
         object AuthenticateUser(User user, object authenticationRequest);
-        User GetUser(object authenticationRequest);
+        User GetUser(object authenticationRequest, IUserProvider userProvider);
         Type AuthenticationRequestType { get; }
     }
 }

@@ -144,8 +144,8 @@ namespace ADIS.Core.Security
 
         public Guid AddedID
         {
-            get { return AddedID; }
-            set { AddedID = value; }
+            get { return addID; }
+            set { addID = value; }
         }
 
         internal IUserBinding UserBinding
